@@ -11,5 +11,6 @@ v17/
 *.dll
 *.pdb
 *.vsidx
+*.v2
 
 _ReSharper*
