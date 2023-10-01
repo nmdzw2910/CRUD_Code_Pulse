@@ -2,8 +2,8 @@
 bin/
 obj/
 
-# Ignore v17 directories
-v17/
+# Ignore .vs/ directories
+.vs/
 
 
 # Others
