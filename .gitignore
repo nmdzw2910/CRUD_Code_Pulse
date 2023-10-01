@@ -2,8 +2,8 @@
 bin/
 obj/
 
-# Ignore v17 directories
-v17/
+# Ignore .vs/ directories
+.vs/
 
 
 # Others
@@ -11,6 +11,5 @@ v17/
 *.dll
 *.pdb
 *.vsidx
-*.v2
 
 _ReSharper*
