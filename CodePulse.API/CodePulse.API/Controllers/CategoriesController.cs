@@ -26,7 +26,7 @@ namespace CodePulse.API.Controllers
             var category = new Category
             {
                 Name = request.Name,
-                UrlHandle = request.UrlHandle,
+                Description = request.Description,
             };
 
             await categoryRepository.CreateAsync(category);
@@ -37,7 +37,7 @@ namespace CodePulse.API.Controllers
             {
                 Id = category.Id,
                 Name = category.Name,
-                UrlHandle = category.UrlHandle,
+                Description = category.Description,
             };
 
             return Ok(response);
@@ -58,7 +58,7 @@ namespace CodePulse.API.Controllers
             {
                 Id = category.Id,
                 Name = category.Name,
-                UrlHandle = category.UrlHandle,
+                Description = category.Description,
             }).ToList();
 
             return Ok(categoryDtos);
@@ -81,7 +81,7 @@ namespace CodePulse.API.Controllers
             {
                 Id = category.Id,
                 Name = category.Name,
-                UrlHandle = category.UrlHandle,
+                Description = category.Description,
             };
 
             return Ok(categoryDto);
@@ -101,7 +101,7 @@ namespace CodePulse.API.Controllers
 
             // Update the properties of the existing category
             existingCategory.Name = request.Name ?? existingCategory.Name;
-            existingCategory.UrlHandle = request.UrlHandle ?? existingCategory.UrlHandle;
+            existingCategory.Description = request.Description ?? existingCategory.Description;
 
             // Call the repository to update the category
             await categoryRepository.UpdateAsync(existingCategory);
@@ -111,7 +111,7 @@ namespace CodePulse.API.Controllers
             {
                 Id = existingCategory.Id,
                 Name = existingCategory.Name,
-                UrlHandle = existingCategory.UrlHandle,
+                Description = existingCategory.Description,
             };
 
             return Ok(updatedCategoryDto);
