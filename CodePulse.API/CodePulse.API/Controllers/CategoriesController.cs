@@ -18,6 +18,7 @@ namespace CodePulse.API.Controllers
             this.categoryRepository = categoryRepository;
         }
 
+        // POST: api/categories
         [HttpPost]
         public async Task<IActionResult> CreateCategory(CreateCategoryRequestDto request)
         {
@@ -40,6 +41,27 @@ namespace CodePulse.API.Controllers
             };
 
             return Ok(response);
+        }
+
+        // GET: api/categories
+        [HttpGet]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            var categories = await categoryRepository.GetAllAsync();
+
+            if (categories == null || categories.Count == 0)
+            {
+                return NotFound("No categories found.");
+            }
+
+            var categoryDtos = categories.Select(category => new CategoryDto
+            {
+                Id = category.Id,
+                Name = category.Name,
+                UrlHandle = category.UrlHandle,
+            }).ToList();
+
+            return Ok(categoryDtos);
         }
     }
 }
