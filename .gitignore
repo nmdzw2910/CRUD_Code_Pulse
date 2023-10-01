@@ -1,9 +1,16 @@
+# Ignore bin and obj directories
 bin/
 obj/
-*.suo
+
+# Ignore .vs/ directories
+.vs/
+
+
+# Others
 *.user
 *.dll
 *.pdb
 *.vsidx
+*.v2
 
 _ReSharper*
