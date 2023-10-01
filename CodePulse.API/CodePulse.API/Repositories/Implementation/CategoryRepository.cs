@@ -50,5 +50,12 @@ namespace CodePulse.API.Repositories.Implementation
             await dbContext.SaveChangesAsync();
             return category;
         }
+
+        public async Task<Category> DeleteAsync(Category category)
+        {
+            dbContext.Categories.Remove(category);
+            await dbContext.SaveChangesAsync();
+            return category;
+        }
     }
 }
