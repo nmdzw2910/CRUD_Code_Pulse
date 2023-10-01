@@ -116,5 +116,24 @@ namespace CodePulse.API.Controllers
 
             return Ok(updatedCategoryDto);
         }
+
+        // DELETE: api/categories/{id}
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCategory(Guid id)
+        {
+            // Find the category by ID
+            var existingCategory = await categoryRepository.GetByIdAsync(id);
+
+            if (existingCategory == null)
+            {
+                return NotFound($"Category with ID {id} not found.");
+            }
+
+            // Call the repository to delete the category
+            await categoryRepository.DeleteAsync(existingCategory);
+
+            // You can return a success message or an appropriate response
+            return Ok($"Category {existingCategory.Name} has been deleted.");
+        }
     }
 }
