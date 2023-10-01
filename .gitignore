@@ -1,0 +1,9 @@
+bin/
+obj/
+*.suo
+*.user
+*.dll
+*.pdb
+*.vsidx
+
+_ReSharper*
