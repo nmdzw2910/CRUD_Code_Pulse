@@ -40,7 +40,7 @@ namespace CodePulse.API.Repositories.Implementation
             return category;
         }
 
-        public async Task UpdateAsync(Category category)
+        public async Task<Category> UpdateAsync(Category category)
         {
             // Attach the category to the DbContext and mark it as modified
             dbContext.Attach(category);
@@ -48,6 +48,7 @@ namespace CodePulse.API.Repositories.Implementation
 
             // Save changes to the database
             await dbContext.SaveChangesAsync();
+            return category;
         }
     }
 }
