@@ -1,6 +1,12 @@
+# Ignore bin and obj directories
 bin/
 obj/
-*.suo
+
+# Ignore v17 directories
+v17/
+
+
+# Others
 *.user
 *.dll
 *.pdb
