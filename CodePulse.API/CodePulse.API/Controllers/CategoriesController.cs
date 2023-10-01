@@ -63,5 +63,58 @@ namespace CodePulse.API.Controllers
 
             return Ok(categoryDtos);
         }
+
+        // GET: api/categories/{id}
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetCategoryById(Guid id)
+        {
+            // Find the category by ID
+            var category = await categoryRepository.GetByIdAsync(id);
+
+            if (category == null)
+            {
+                return NotFound($"Category with ID {id} not found.");
+            }
+
+            // Map the category to DTO
+            var categoryDto = new CategoryDto
+            {
+                Id = category.Id,
+                Name = category.Name,
+                UrlHandle = category.UrlHandle,
+            };
+
+            return Ok(categoryDto);
+        }
+
+        // PUT: api/categories/{id}
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateCategory(Guid id, UpdateCategoryRequestDto request)
+        {
+            // Find the category by ID
+            var existingCategory = await categoryRepository.GetByIdAsync(id);
+
+            if (existingCategory == null)
+            {
+                return NotFound($"Category with ID {id} not found.");
+            }
+
+            // Update the properties of the existing category
+            existingCategory.Name = request.Name ?? existingCategory.Name;
+            existingCategory.UrlHandle = request.UrlHandle ?? existingCategory.UrlHandle;
+
+            // Call the repository to update the category
+            await categoryRepository.UpdateAsync(existingCategory);
+
+            // Map the updated category to DTO
+            var updatedCategoryDto = new CategoryDto
+            {
+                Id = existingCategory.Id,
+                Name = existingCategory.Name,
+                UrlHandle = existingCategory.UrlHandle,
+            };
+
+            return Ok(updatedCategoryDto);
+        }
     }
 }

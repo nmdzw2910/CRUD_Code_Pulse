@@ -27,5 +27,27 @@ namespace CodePulse.API.Repositories.Implementation
 
             return categories;
         }
+
+        public async Task<Category> GetByIdAsync(Guid id)
+        {
+            var category = await dbContext.Categories.FindAsync(id);
+
+            if (category == null)
+            {
+                throw new Exception("Category not found.");
+            }
+
+            return category;
+        }
+
+        public async Task UpdateAsync(Category category)
+        {
+            // Attach the category to the DbContext and mark it as modified
+            dbContext.Attach(category);
+            dbContext.Entry(category).State = EntityState.Modified;
+
+            // Save changes to the database
+            await dbContext.SaveChangesAsync();
+        }
     }
 }
