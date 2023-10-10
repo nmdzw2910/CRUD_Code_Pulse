@@ -10,6 +10,6 @@ namespace CodePulse.API.Models.Domain
         public int? Stock { get; set; }
         public string? Brand { get; set; }
         public string? Category { get; set; }
-        //public List<Image> Images { get; set; }
+        public List<Image>? Images { get; set; } = new List<Image>();
     }
 }

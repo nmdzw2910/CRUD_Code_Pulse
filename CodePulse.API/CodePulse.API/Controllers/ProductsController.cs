@@ -41,7 +41,7 @@ namespace CodePulse.API.Controllers
                 Stock = product.Stock,
                 Brand = product.Brand,
                 Category = product.Category,
-                //Images = product.Images,
+                Images = product.Images,
             }).ToList();
 
             return Ok(productDtos);
@@ -67,7 +67,7 @@ namespace CodePulse.API.Controllers
                 Stock = product.Stock,
                 Brand = product.Brand,
                 Category = product.Category,
-                //Images = product.Images,
+                Images = product.Images,
             };
 
             return Ok(productDto);

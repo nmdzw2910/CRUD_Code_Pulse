@@ -23,30 +23,32 @@ namespace CodePulse.API.Repositories.Implementation
 
         public async Task<List<Product>> GetAllAsync()
         {
-            List<Product> categories = await dbContext.Products.ToListAsync();
+            List<Product> categories = await dbContext.Products.Include(p => p.Images).ToListAsync();
 
             return categories;
         }
 
         public async Task<Product> GetByIdAsync(Guid id)
         {
-            var product = await dbContext.Products.FindAsync(id);
+            var product = await dbContext.Products.Include(p => p.Images).FirstOrDefaultAsync(p => p.Id == id);
             return product;
         }
 
         public async Task<Product> UpdateAsync(Product product)
         {
-            // Attach the product to the DbContext and mark it as modified
             dbContext.Attach(product);
             dbContext.Entry(product).State = EntityState.Modified;
 
-            // Save changes to the database
             await dbContext.SaveChangesAsync();
             return product;
         }
 
         public async Task<Product> DeleteAsync(Product product)
         {
+            if (product.Images != null)
+            {
+                dbContext.Images.RemoveRange(product.Images);
+            }
             dbContext.Products.Remove(product);
             await dbContext.SaveChangesAsync();
             return product;

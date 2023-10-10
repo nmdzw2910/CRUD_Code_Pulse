@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using CodePulse.API.Models.Domain;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace CodePulse.API.Models.DTO
@@ -16,6 +17,6 @@ namespace CodePulse.API.Models.DTO
         public int? Stock { get; set; }
         public string? Brand { get; set; }
         public string? Category { get; set; }
-        //public List<Image> Images { get; set; }
+        public List<Image>? Images { get; set; } = new List<Image>();
     }
 }

@@ -28,6 +28,7 @@ namespace CodePulse.API.Services
                 Stock = request.Stock,
                 Brand = request.Brand,
                 Category = request.Category,
+                Images = request.Images,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now,
             };
@@ -42,6 +43,7 @@ namespace CodePulse.API.Services
                 Stock = product.Stock,
                 Brand = product.Brand,
                 Category = product.Category,
+                Images = product.Images,
             };
             return response;
         }
@@ -54,6 +56,7 @@ namespace CodePulse.API.Services
             existingProduct.Stock = request.Stock ?? existingProduct.Stock;
             existingProduct.Brand = request.Brand ?? existingProduct.Brand;  
             existingProduct.Category = request.Category ?? existingProduct.Category;
+            existingProduct.Images = request.Images ?? existingProduct.Images;
             existingProduct.UpdatedAt = DateTime.Now;
 
             await productRepository.UpdateAsync(existingProduct);
@@ -67,6 +70,7 @@ namespace CodePulse.API.Services
                 Stock = existingProduct.Stock,
                 Brand = existingProduct.Brand,
                 Category = existingProduct.Category,
+                Images = existingProduct.Images
             };
 
             return response;
