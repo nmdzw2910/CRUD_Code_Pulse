@@ -31,12 +31,6 @@ namespace CodePulse.API.Repositories.Implementation
         public async Task<Category> GetByIdAsync(Guid id)
         {
             var category = await dbContext.Categories.FindAsync(id);
-
-            if (category == null)
-            {
-                throw new Exception("Category not found.");
-            }
-
             return category;
         }
 
