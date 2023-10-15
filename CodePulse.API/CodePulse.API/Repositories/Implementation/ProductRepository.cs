@@ -13,13 +13,6 @@ namespace CodePulse.API.Repositories.Implementation
         {
             this.dbContext = dbContext;
         }
-        public async Task<Product> CreateAsync(Product product)
-        {
-            await dbContext.Products.AddAsync(product);
-            await dbContext.SaveChangesAsync();
-
-            return product;
-        }
 
         public async Task<List<Product>> GetAllAsync()
         {
@@ -31,6 +24,14 @@ namespace CodePulse.API.Repositories.Implementation
         public async Task<Product> GetByIdAsync(Guid id)
         {
             var product = await dbContext.Products.Include(p => p.Images).FirstOrDefaultAsync(p => p.Id == id);
+            return product;
+        }
+
+        public async Task<Product> CreateAsync(Product product)
+        {
+            await dbContext.Products.AddAsync(product);
+            await dbContext.SaveChangesAsync();
+
             return product;
         }
 

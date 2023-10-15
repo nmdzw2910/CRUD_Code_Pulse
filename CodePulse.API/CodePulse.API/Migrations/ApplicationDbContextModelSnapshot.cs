@@ -82,6 +82,9 @@ namespace CodePulse.API.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("OrderNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
 
@@ -126,7 +129,7 @@ namespace CodePulse.API.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetail");
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("CodePulse.API.Models.Domain.Product", b =>
@@ -197,7 +200,7 @@ namespace CodePulse.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShippingInformation");
+                    b.ToTable("ShippingInformations");
                 });
 
             modelBuilder.Entity("CodePulse.API.Models.Domain.Image", b =>

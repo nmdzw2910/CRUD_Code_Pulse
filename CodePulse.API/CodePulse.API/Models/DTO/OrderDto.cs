@@ -8,6 +8,7 @@ namespace CodePulse.API.Models.DTO
     {
         [Required]
         public Guid Id { get; set; } = Guid.Empty;
+        public string? OrderNumber { get; set; }
         public OrderStatus OrderStatus { get; set; }
         public float TotalAmount { get; set; }
         public ShippingInformation ShippingInformation { get; set; } = new ShippingInformation();

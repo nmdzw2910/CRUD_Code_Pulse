@@ -12,7 +12,7 @@ namespace CodePulse.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ShippingInformation",
+                name: "ShippingInformations",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -25,7 +25,7 @@ namespace CodePulse.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ShippingInformation", x => x.Id);
+                    table.PrimaryKey("PK_ShippingInformations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -34,6 +34,7 @@ namespace CodePulse.API.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OrderStatus = table.Column<int>(type: "int", nullable: false),
+                    OrderNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TotalAmount = table.Column<float>(type: "real", nullable: false),
                     ShippingInformationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     PaymentMethod = table.Column<int>(type: "int", nullable: false),
@@ -44,15 +45,15 @@ namespace CodePulse.API.Migrations
                 {
                     table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Orders_ShippingInformation_ShippingInformationId",
+                        name: "FK_Orders_ShippingInformations_ShippingInformationId",
                         column: x => x.ShippingInformationId,
-                        principalTable: "ShippingInformation",
+                        principalTable: "ShippingInformations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderDetail",
+                name: "OrderDetails",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -63,9 +64,9 @@ namespace CodePulse.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderDetail", x => x.Id);
+                    table.PrimaryKey("PK_OrderDetails", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderDetail_Orders_OrderId",
+                        name: "FK_OrderDetails_Orders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "Orders",
                         principalColumn: "Id",
@@ -73,8 +74,8 @@ namespace CodePulse.API.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderDetail_OrderId",
-                table: "OrderDetail",
+                name: "IX_OrderDetails_OrderId",
+                table: "OrderDetails",
                 column: "OrderId");
 
             migrationBuilder.CreateIndex(
@@ -87,13 +88,13 @@ namespace CodePulse.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "OrderDetail");
+                name: "OrderDetails");
 
             migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "ShippingInformation");
+                name: "ShippingInformations");
         }
     }
 }

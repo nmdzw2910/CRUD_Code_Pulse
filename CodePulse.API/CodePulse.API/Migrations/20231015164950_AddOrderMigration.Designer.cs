@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodePulse.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231015142122_AddOrderMigration")]
+    [Migration("20231015164950_AddOrderMigration")]
     partial class AddOrderMigration
     {
         /// <inheritdoc />
@@ -85,6 +85,9 @@ namespace CodePulse.API.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("OrderNumber")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");
 
@@ -129,7 +132,7 @@ namespace CodePulse.API.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetail");
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("CodePulse.API.Models.Domain.Product", b =>
@@ -200,7 +203,7 @@ namespace CodePulse.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShippingInformation");
+                    b.ToTable("ShippingInformations");
                 });
 
             modelBuilder.Entity("CodePulse.API.Models.Domain.Image", b =>
