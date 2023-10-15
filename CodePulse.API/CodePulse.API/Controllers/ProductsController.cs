@@ -1,6 +1,4 @@
-﻿using CodePulse.API.Models.Domain;
-using CodePulse.API.Models.DTO;
-using CodePulse.API.Repositories.Implementation;
+﻿using CodePulse.API.Models.DTO;
 using CodePulse.API.Repositories.Interface;
 using CodePulse.API.Services;
 using Microsoft.AspNetCore.Mvc;

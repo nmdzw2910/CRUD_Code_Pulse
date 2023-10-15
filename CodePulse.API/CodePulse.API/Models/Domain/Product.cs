@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace CodePulse.API.Models.Domain
+﻿namespace CodePulse.API.Models.Domain
 {
     public class Product : BaseModel
     {
