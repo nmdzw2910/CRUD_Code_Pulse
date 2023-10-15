@@ -10,7 +10,7 @@ namespace CodePulse.API.Models.DTO
         [Required]
         public Guid Id { get; set; } = Guid.Empty;
         [Required]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
         [Column(TypeName = "decimal(18, 2)")]
         public decimal? Price { get; set; }

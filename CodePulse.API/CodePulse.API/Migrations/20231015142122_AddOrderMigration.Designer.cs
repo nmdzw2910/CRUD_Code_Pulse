@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodePulse.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231015140950_AddOrderMigration")]
+    [Migration("20231015142122_AddOrderMigration")]
     partial class AddOrderMigration
     {
         /// <inheritdoc />
