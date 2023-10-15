@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodePulse.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20231015134022_AddOrderMigration")]
+    [Migration("20231015140950_AddOrderMigration")]
     partial class AddOrderMigration
     {
         /// <inheritdoc />
@@ -76,6 +76,62 @@ namespace CodePulse.API.Migrations
                     b.ToTable("Images");
                 });
 
+            modelBuilder.Entity("CodePulse.API.Models.Domain.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("OrderStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ShippingInformationId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float>("TotalAmount")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShippingInformationId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("CodePulse.API.Models.Domain.OrderDetail", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderDetail");
+                });
+
             modelBuilder.Entity("CodePulse.API.Models.Domain.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -112,11 +168,71 @@ namespace CodePulse.API.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("CodePulse.API.Models.Domain.ShippingInformation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("District")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ShippingInformation");
+                });
+
             modelBuilder.Entity("CodePulse.API.Models.Domain.Image", b =>
                 {
                     b.HasOne("CodePulse.API.Models.Domain.Product", null)
                         .WithMany("Images")
                         .HasForeignKey("ProductId");
+                });
+
+            modelBuilder.Entity("CodePulse.API.Models.Domain.Order", b =>
+                {
+                    b.HasOne("CodePulse.API.Models.Domain.ShippingInformation", "ShippingInformation")
+                        .WithMany()
+                        .HasForeignKey("ShippingInformationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ShippingInformation");
+                });
+
+            modelBuilder.Entity("CodePulse.API.Models.Domain.OrderDetail", b =>
+                {
+                    b.HasOne("CodePulse.API.Models.Domain.Order", null)
+                        .WithMany("OrderDetails")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CodePulse.API.Models.Domain.Order", b =>
+                {
+                    b.Navigation("OrderDetails");
                 });
 
             modelBuilder.Entity("CodePulse.API.Models.Domain.Product", b =>
