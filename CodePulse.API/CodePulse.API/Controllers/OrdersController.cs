@@ -69,7 +69,7 @@ namespace CodePulse.API.Controllers
             return Ok(orderDto);
         }
 
-        [HttpGet("{orderNumber}")]
+        [HttpGet("orderNumber/{orderNumber}")]
         public async Task<IActionResult> GetOrderByOrderNumber(string orderNumber)
         {
             var order = await orderRepository.GetByOrderNumberAsync(orderNumber);

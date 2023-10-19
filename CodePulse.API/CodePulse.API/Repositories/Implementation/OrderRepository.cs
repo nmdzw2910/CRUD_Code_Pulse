@@ -53,6 +53,7 @@ namespace CodePulse.API.Repositories.Implementation
         {
             dbContext.Attach(order);
             dbContext.Entry(order).State = EntityState.Modified;
+            dbContext.Entry(order.ShippingInformation).State = EntityState.Modified;
 
             await dbContext.SaveChangesAsync();
             return order;
