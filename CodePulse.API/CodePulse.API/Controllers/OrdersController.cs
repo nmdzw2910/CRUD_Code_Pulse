@@ -1,5 +1,5 @@
-﻿using CodePulse.API.Models.DTO;
-using CodePulse.API.Repositories.Implementation;
+﻿using AutoMapper;
+using CodePulse.API.Models.DTO;
 using CodePulse.API.Repositories.Interface;
 using CodePulse.API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -12,13 +12,18 @@ namespace CodePulse.API.Controllers
     {
         private readonly IOrderRepository orderRepository;
         private readonly IOrderService orderService;
+        private readonly IMapper mapper;
 
-        public OrdersController(IOrderRepository orderRepository, IOrderService orderService)
+        public OrdersController(IOrderRepository orderRepository, IOrderService orderService, IMapper mapper)
         {
             this.orderRepository = orderRepository;
             this.orderService = orderService;
+            this.mapper = mapper;
         }
 
+        /// <summary>
+        /// Retrieve a list of all orders.
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAllOrders()
         {
@@ -28,22 +33,15 @@ namespace CodePulse.API.Controllers
             {
                 return NotFound("No orders found.");
             }
-
-            var orderDtos = orders.Select(order => new OrderDto
-            {
-                Id = order.Id,
-                OrderNumber = order.OrderNumber,
-                OrderStatus = order.OrderStatus,
-                TotalAmount = order.TotalAmount,
-                ShippingInformation = order.ShippingInformation,
-                PaymentMethod = order.PaymentMethod,
-                OrderDetails = order.OrderDetails,
-                CreatedAt = order.CreatedAt,
-            });
+            var orderDtos = mapper.Map<IEnumerable<OrderDto>>(orders);
 
             return Ok(orderDtos);
         }
 
+        /// <summary>
+        /// Retrieve an order by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the order.</param>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetOrderById(Guid id)
         {
@@ -54,17 +52,7 @@ namespace CodePulse.API.Controllers
                 return NotFound($"Order with ID {id} not found.");
             }
 
-            var orderDto = new OrderDto
-            {
-                Id = order.Id,
-                OrderNumber = order.OrderNumber,
-                OrderStatus = order.OrderStatus,
-                TotalAmount = order.TotalAmount,
-                ShippingInformation = order.ShippingInformation,
-                PaymentMethod = order.PaymentMethod,
-                OrderDetails = order.OrderDetails,
-                CreatedAt = order.CreatedAt,
-            };
+            var orderDto = mapper.Map<OrderDto>(order);
 
             return Ok(orderDto);
         }
@@ -78,24 +66,13 @@ namespace CodePulse.API.Controllers
             {
                 return NotFound($"Order with OrderNumber {orderNumber} not found.");
             }
-
-            var orderDto = new OrderDto
-            {
-                Id = order.Id,
-                OrderNumber = order.OrderNumber,
-                OrderStatus = order.OrderStatus,
-                TotalAmount = order.TotalAmount,
-                ShippingInformation = order.ShippingInformation,
-                PaymentMethod = order.PaymentMethod,
-                OrderDetails = order.OrderDetails,
-                CreatedAt = order.CreatedAt,
-            };
+            var orderDto = mapper.Map<OrderDto>(order);
 
             return Ok(orderDto);
         }
 
         /// <summary>
-        /// Creates or updates an Order. If the optional id is provided in the body, the existing Order with that id is overwritten.
+        /// Create or update an Order. If the optional id is provided in the body, the existing Order with that id is overwritten.
         /// If it is not provided, then a new Order is created, and an id is generated.
         /// </summary>
         /// <param name="order">
@@ -110,7 +87,10 @@ namespace CodePulse.API.Controllers
             return Ok(response);
         }
 
-        // DELETE: api/orders/{id}
+        /// <summary>
+        /// Delete an order by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the order to delete.</param>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteOrderById(Guid id)
         {
@@ -126,9 +106,12 @@ namespace CodePulse.API.Controllers
             return Ok($"Order {existingOrder.OrderNumber} has been deleted.");
         }
 
-        // DELETE: api/orders
-        [HttpDelete]
-        public async Task<IActionResult> BulkDeleteOrders(List<Guid> ids)
+        /// <summary>
+        /// Delete multiple orders by their unique identifiers.
+        /// </summary>
+        /// <param name="ids">A collection of unique identifiers for the orders to delete.</param>
+        [HttpDelete("bulkdelete")]
+        public async Task<IActionResult> BulkDeleteOrders([FromBody] List<Guid> ids)
         {
             if (ids == null || ids.Count == 0)
             {

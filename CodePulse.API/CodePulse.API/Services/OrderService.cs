@@ -67,6 +67,7 @@ namespace CodePulse.API.Services
 
             order.OrderNumber = orderNumber;
             order.CreatedAt = DateTime.Now;
+            order.OrderDetails = request.OrderDetails;
 
             await orderRepository.CreateAsync(order);
 

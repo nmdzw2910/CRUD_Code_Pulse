@@ -72,7 +72,7 @@ namespace CodePulse.API.Controllers
         }
 
         /// <summary>
-        /// Creates or updates an Product. If the optional id is provided in the body, the existing Product with that id is overwritten.
+        /// Create or update a Product. If the optional id is provided in the body, the existing Product with that id is overwritten.
         /// If it is not provided, then a new Product is created, and an id is generated.
         /// </summary>
         /// <param name="product">
