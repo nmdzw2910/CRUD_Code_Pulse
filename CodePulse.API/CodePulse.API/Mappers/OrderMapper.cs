@@ -2,9 +2,9 @@
 using CodePulse.API.Models.Domain;
 using CodePulse.API.Models.DTO;
 
-public class OrderMappers : Profile
+public class OrderMapper : Profile
 {
-    public OrderMappers()
+    public OrderMapper()
     {
         CreateMap<OrderDto, Order>()
             .ForMember(dest => dest.OrderNumber, opt => opt.Ignore())

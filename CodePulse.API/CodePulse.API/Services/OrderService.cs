@@ -70,10 +70,7 @@ namespace CodePulse.API.Services
             order.OrderDetails = request.OrderDetails;
 
             await orderRepository.CreateAsync(order);
-
-            var response = mapper.Map<OrderDto>(order);
-
-            return response;
+            return mapper.Map<OrderDto>(order);
         } 
     }
 }

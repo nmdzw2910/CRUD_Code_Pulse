@@ -1,4 +1,5 @@
-﻿using CodePulse.API.Models.DTO;
+﻿using AutoMapper;
+using CodePulse.API.Models.DTO;
 using CodePulse.API.Repositories.Interface;
 using CodePulse.API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,15 +12,18 @@ namespace CodePulse.API.Controllers
     {
         private readonly IProductRepository productRepository;
         private readonly IProductService productService;
+        private readonly IMapper mapper;
 
-
-        public ProductsController(IProductRepository productRepository, IProductService productService)
+        public ProductsController(IProductRepository productRepository, IProductService productService, IMapper mapper)
         {
             this.productRepository = productRepository;
             this.productService = productService;
+            this.mapper = mapper;
         }
 
-        // GET: api/products
+        /// <summary>
+        /// Retrieves a list of all products.
+        /// </summary>
         [HttpGet]
         public async Task<IActionResult> GetAllProducts()
         {
@@ -30,22 +34,15 @@ namespace CodePulse.API.Controllers
                 return NotFound("No products found.");
             }
 
-            var productDtos = products.Select(product => new ProductDto
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                Stock = product.Stock,
-                Brand = product.Brand,
-                Category = product.Category,
-                Images = product.Images,
-            }).ToList();
+            var productDtos = mapper.Map<IEnumerable<ProductDto>>(products);
 
             return Ok(productDtos);
         }
 
-        // GET: api/products/{id}
+        /// <summary>
+        /// Retrieves a product by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the product.</param>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetProductById(Guid id)
         {
@@ -56,17 +53,7 @@ namespace CodePulse.API.Controllers
                 return NotFound($"Product with ID {id} not found.");
             }
 
-            var productDto = new ProductDto
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                Stock = product.Stock,
-                Brand = product.Brand,
-                Category = product.Category,
-                Images = product.Images,
-            };
+            var productDto = mapper.Map<ProductDto>(product);
 
             return Ok(productDto);
         }
@@ -87,7 +74,10 @@ namespace CodePulse.API.Controllers
             return Ok(response);
         }
 
-        // DELETE: api/products/{id}
+        /// <summary>
+        /// Deletes a product by its unique identifier.
+        /// </summary>
+        /// <param name="id">The unique identifier of the product to delete.</param>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProductById(Guid id)
         {
@@ -103,9 +93,12 @@ namespace CodePulse.API.Controllers
             return Ok($"Product {existingProduct.Name} has been deleted.");
         }
 
-        // DELETE: api/products
-        [HttpDelete]
-        public async Task<IActionResult> BulkDeleteProducts(List<Guid> ids)
+        /// <summary>
+        /// Deletes multiple products by their unique identifiers.
+        /// </summary>
+        /// <param name="ids">A collection of unique identifiers for the products to delete.</param>
+        [HttpDelete("bulkdelete")]
+        public async Task<IActionResult> BulkDeleteProducts([FromBody] List<Guid> ids)
         {
             if (ids == null || ids.Count == 0)
             {
