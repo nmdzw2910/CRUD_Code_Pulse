@@ -1,6 +1,6 @@
 ﻿namespace CodePulse.API.Models.Domain
 {
-    public class Image
+    public class ProductImage
     {
         public Guid Id { get; set; }
         public string? Title { get; set; }

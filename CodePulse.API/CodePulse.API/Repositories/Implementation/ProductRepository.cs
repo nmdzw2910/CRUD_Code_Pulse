@@ -16,14 +16,14 @@ namespace CodePulse.API.Repositories.Implementation
 
         public async Task<List<Product>> GetAllAsync()
         {
-            List<Product> categories = await dbContext.Products.Include(p => p.Images).ToListAsync();
+            List<Product> categories = await dbContext.Products.Include(p => p.ProductImages).ToListAsync();
 
             return categories;
         }
 
         public async Task<Product> GetByIdAsync(Guid id)
         {
-            var product = await dbContext.Products.Include(p => p.Images).FirstOrDefaultAsync(p => p.Id == id);
+            var product = await dbContext.Products.Include(p => p.ProductImages).FirstOrDefaultAsync(p => p.Id == id);
             return product;
         }
 
@@ -46,9 +46,9 @@ namespace CodePulse.API.Repositories.Implementation
 
         public async Task<Product> DeleteAsync(Product product)
         {
-            if (product.Images != null)
+            if (product.ProductImages != null)
             {
-                dbContext.Images.RemoveRange(product.Images);
+                dbContext.ProductImages.RemoveRange(product.ProductImages);
             }
             dbContext.Products.Remove(product);
             await dbContext.SaveChangesAsync();
