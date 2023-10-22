@@ -17,6 +17,6 @@ namespace CodePulse.API.Models.DTO
         public int? Stock { get; set; }
         public string? Brand { get; set; }
         public string? Category { get; set; }
-        public List<ProductImage>? ProductImages { get; set; } = new List<ProductImage>();
+        public List<ProductImageDto>? ProductImages { get; set; } = new List<ProductImageDto>();
     }
 }
