@@ -10,6 +10,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './core/components/header/header.component';
 import { BaseImageComponent } from './base/base-image/base-image.component';
+import { AddProductComponent } from './features/product/add-product/add-product.component';
+import { ProductListComponent } from './features/product/product-list/product-list.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { BaseImageComponent } from './base/base-image/base-image.component';
     AddCategoryComponent,
     HeaderComponent,
     BaseImageComponent,
+    AddProductComponent,
+    ProductListComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],
