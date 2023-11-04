@@ -9,6 +9,11 @@ import { Product } from 'src/app/core/models/domain/product';
 })
 export class ProductService {
   constructor(private http: HttpClient) {}
+
+  getAllProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(`${environment.apiEndpoint}/products`);
+  }
+
   upsertProduct(model: Product): Observable<void> {
     return this.http.put<void>(`${environment.apiEndpoint}/products`, model);
   }

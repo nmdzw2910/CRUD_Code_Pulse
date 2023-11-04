@@ -5,4 +5,50 @@
       Add Product
     </a>
   </div>
+  <div class="product-list mt-3">
+    <div class="row">
+      <div class="col-md-2">
+        <form class="form-inline">
+          <div class="form-group mr-2">
+            <label for="sortSelect">Sort by:</label>
+            <!-- (change)="sortProducts($event.target.value)" -->
+            <select class="form-control" id="sortSelect">
+              <option value="name">Name</option>
+              <option value="price">Price</option>
+              <!-- Add more sorting options as needed -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="filterInput">Filter by Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="filterInput"
+              placeholder="Enter name..."
+            />
+            <!-- (input)="filterProducts($event.target.value)" -->
+          </div>
+        </form>
+      </div>
+      <div class="list-view col-md-10">
+        <div class="row">
+          <div
+            *ngFor="let product of products"
+            class="col-md-auto product-item me-3"
+          >
+            <div class="card mb-3">
+              <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.description }}</p>
+                <p class="card-text">Price: ${{ product.price }}</p>
+                <p class="card-text">Stock: {{ product.stock }}</p>
+                <p class="card-text">Brand: {{ product.brand }}</p>
+                <p class="card-text">Category: {{ product.category }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
