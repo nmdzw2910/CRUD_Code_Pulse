@@ -7,6 +7,7 @@ namespace CodePulse.API.Services
     {
         Task<ProductDto> Create(ProductDto request);
         Task<ProductDto> Update(Product existingProduct, ProductDto request);
+        Task<List<ProductImage>> UploadImages(IFormFileCollection files);
         Task<ProductDto> Upsert(ProductDto product);
     }
 }

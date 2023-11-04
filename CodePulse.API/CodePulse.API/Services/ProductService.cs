@@ -3,7 +3,6 @@ using CodePulse.API.Data;
 using CodePulse.API.Models.Domain;
 using CodePulse.API.Models.DTO;
 using CodePulse.API.Repositories.Interface;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace CodePulse.API.Services
 {
@@ -12,16 +11,19 @@ namespace CodePulse.API.Services
         private readonly IProductRepository productRepository;
         private readonly IMapper mapper;
         private readonly ApplicationDbContext dbContext;
+        private readonly IS3Service s3Service;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProductService"/> class.
         /// </summary>
         /// <param name="productRepository">IProductRepository.</param>
-        public ProductService(IProductRepository productRepository, IMapper mapper, ApplicationDbContext dbContext)
+        public ProductService(IProductRepository productRepository, IMapper mapper, ApplicationDbContext dbContext, IS3Service s3Service)
         {
             this.productRepository = productRepository;
             this.mapper = mapper;
             this.dbContext = dbContext;
+            this.s3Service = s3Service; 
         }
 
         public async Task<ProductDto> Create(ProductDto request)
@@ -36,7 +38,6 @@ namespace CodePulse.API.Services
         {
             mapper.Map(request, existingProduct);
 
-            existingProduct.ProductImages = UpdateImages(existingProduct.ProductImages, request.ProductImages);
             existingProduct.UpdatedAt = DateTime.Now;
 
             await productRepository.UpdateAsync(existingProduct);
@@ -54,40 +55,36 @@ namespace CodePulse.API.Services
             return await Create(product);
         }
 
-        private List<ProductImage> UpdateImages(List<ProductImage> existingImages, List<ProductImageDto> updatedImages)
+        public async Task<List<ProductImage>> UploadImages(IFormFileCollection files)
         {
-            var imagesToDelete = existingImages.Where(existingImage =>
-                !updatedImages.Any(updatedImage => updatedImage.Id == existingImage.Id)).ToList();
+            var uploadedImages = new List<ProductImage>();
 
-            if (imagesToDelete.Any())
+            if (files == null || files.Count == 0)
             {
-                dbContext.ProductImages.RemoveRange(imagesToDelete);
-                foreach (var image in imagesToDelete)
-                {
-                    existingImages.Remove(image);
-                }
+                return uploadedImages;
             }
-            
-            foreach (var updatedImage in updatedImages)
+
+            var productImagePath = "ProductImages/";
+
+            foreach (var file in files)
             {
-                if (updatedImage.Id == Guid.Empty)
+                if (file.Length > 0)
                 {
-                    updatedImage.Id = Guid.NewGuid();
-                }
+                    var imageUrl = await s3Service.UploadImageToS3(file, productImagePath);
 
-                var existingImage = existingImages.FirstOrDefault(image => image.Id == updatedImage.Id);
+                    var productImage = new ProductImage
+                    {
+                        Id = Guid.NewGuid(),
+                        Url = imageUrl
+                    };
 
-                if (existingImage != null)
-                {
-                    mapper.Map(updatedImage, existingImage);
-                }
-                else
-                {
-                    existingImages.Add(mapper.Map<ProductImage>(updatedImage));
+                    uploadedImages.Add(productImage);
                 }
             }
 
-            return existingImages;
+            return uploadedImages;
         }
+
+
     }
 }

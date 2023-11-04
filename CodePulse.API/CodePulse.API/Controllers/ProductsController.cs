@@ -117,5 +117,17 @@ namespace CodePulse.API.Controllers
 
             return Ok($"Deleted {ids.Count} products.");
         }
+        [HttpPost("uploadProductImages")]
+        public async Task<IActionResult> UploadProductImages(IFormFileCollection files)
+        {
+            var uploadedImages = await productService.UploadImages(files);
+
+            if (uploadedImages == null)
+            {
+                return BadRequest("Error uploading images.");
+            }
+
+            return Ok(uploadedImages);
+        }
     }
 }

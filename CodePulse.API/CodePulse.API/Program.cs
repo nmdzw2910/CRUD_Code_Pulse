@@ -1,3 +1,4 @@
+using Amazon.S3;
 using CodePulse.API.Data;
 using CodePulse.API.Repositories.Implementation;
 using CodePulse.API.Repositories.Interface;
@@ -24,8 +25,8 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
 builder.Services.AddScoped<IOrderService, OrderService>();
-
-
+builder.Services.AddScoped<IS3Service, S3Service>();
+builder.Services.AddScoped<IAmazonS3, AmazonS3Client>();
 
 var app = builder.Build();
 
