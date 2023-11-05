@@ -67,9 +67,10 @@ namespace CodePulse.API.Controllers
         /// The Id attribute is optional and when provided the existing Product with that id is overwritten.
         /// </param>
         [HttpPut]
-        public async Task<IActionResult> UpsertProduct(ProductDto request)
+        public async Task<IActionResult> UpsertProduct([FromForm] ProductDto product)
         {
-            var response = await productService.Upsert(request);
+            var images = Request.Form.Files;
+            var response = await productService.Upsert(product, images);
 
             return Ok(response);
         }
@@ -116,18 +117,6 @@ namespace CodePulse.API.Controllers
             }
 
             return Ok($"Deleted {ids.Count} products.");
-        }
-        [HttpPost("uploadProductImages")]
-        public async Task<IActionResult> UploadProductImages(IFormFileCollection files)
-        {
-            var uploadedImages = await productService.UploadImages(files);
-
-            if (uploadedImages == null)
-            {
-                return BadRequest("Error uploading images.");
-            }
-
-            return Ok(uploadedImages);
         }
     }
 }

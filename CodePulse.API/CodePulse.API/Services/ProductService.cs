@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CodePulse.API.Data;
 using CodePulse.API.Models.Domain;
 using CodePulse.API.Models.DTO;
 using CodePulse.API.Repositories.Interface;
@@ -10,7 +9,6 @@ namespace CodePulse.API.Services
     {
         private readonly IProductRepository productRepository;
         private readonly IMapper mapper;
-        private readonly ApplicationDbContext dbContext;
         private readonly IS3Service s3Service;
 
 
@@ -18,18 +16,18 @@ namespace CodePulse.API.Services
         /// Initializes a new instance of the <see cref="ProductService"/> class.
         /// </summary>
         /// <param name="productRepository">IProductRepository.</param>
-        public ProductService(IProductRepository productRepository, IMapper mapper, ApplicationDbContext dbContext, IS3Service s3Service)
+        public ProductService(IProductRepository productRepository, IMapper mapper, IS3Service s3Service)
         {
             this.productRepository = productRepository;
             this.mapper = mapper;
-            this.dbContext = dbContext;
-            this.s3Service = s3Service; 
+            this.s3Service = s3Service;
         }
 
-        public async Task<ProductDto> Create(ProductDto request)
+        public async Task<ProductDto> Create(ProductDto request, IFormFileCollection images)
         {
             var product = mapper.Map<Product>(request);
             product.CreatedAt = DateTime.Now;
+            product.ProductImages = await UploadImages(images);
             await productRepository.CreateAsync(product);
             return mapper.Map<ProductDto>(product);
         }
@@ -44,7 +42,7 @@ namespace CodePulse.API.Services
             return mapper.Map<ProductDto>(existingProduct);
         }
 
-        public async Task<ProductDto> Upsert(ProductDto product)
+        public async Task<ProductDto> Upsert(ProductDto product, IFormFileCollection images)
         {
             var existingProduct = await productRepository.GetByIdAsync(product.Id);
 
@@ -52,7 +50,7 @@ namespace CodePulse.API.Services
             {
                 return await Update(existingProduct, product);
             }
-            return await Create(product);
+            return await Create(product, images);
         }
 
         public async Task<List<ProductImage>> UploadImages(IFormFileCollection files)
@@ -64,7 +62,7 @@ namespace CodePulse.API.Services
                 return uploadedImages;
             }
 
-            var productImagePath = "ProductImages/";
+            var productImagePath = "productImages/";
 
             foreach (var file in files)
             {
@@ -74,7 +72,6 @@ namespace CodePulse.API.Services
 
                     var productImage = new ProductImage
                     {
-                        Id = Guid.NewGuid(),
                         Url = imageUrl
                     };
 
@@ -84,7 +81,5 @@ namespace CodePulse.API.Services
 
             return uploadedImages;
         }
-
-
     }
 }

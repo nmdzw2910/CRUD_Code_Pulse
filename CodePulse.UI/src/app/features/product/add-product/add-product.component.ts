@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { Product } from 'src/app/core/models/domain/product';
 import { ProductService } from '../service/product.service';
 
@@ -9,30 +8,46 @@ import { ProductService } from '../service/product.service';
   styleUrls: ['./add-product.component.css'],
 })
 export class AddProductComponent {
-  model: Product;
-  private addProductSubscription?: Subscription;
-  successMessage: string = '';
-  errorMessage: string = '';
+  product: Product;
+  selectedImages: File[] = [];
 
   constructor(private productService: ProductService) {
-    this.model = {
+    this.product = {
       name: '',
     };
   }
-  onFormSubmit() {
-    this.productService.upsertProduct(this.model).subscribe(
-      (response) => {
-        // Handle success
-        this.successMessage = 'Product added successfully';
-        this.model = {
-          name: '',
-        }; // Clear the form
+
+  onImageUpload(event: any) {
+    this.selectedImages = event.target.files;
+  }
+
+  onFormSubmit(): void {
+    const formData = this.createFormData(this.product);
+    this.productService.upsertProduct(formData).subscribe({
+      next: (response) => {
+        this.product = response as Product;
+        console.log('success');
       },
-      (error) => {
-        // Handle error
-        this.errorMessage = 'Error adding the product';
+      error: (error) => {
         console.error('Error:', error);
-      }
+      },
+    });
+  }
+
+  createFormData(product: Product): FormData {
+    const formData = new FormData();
+    formData.append('id', product.id || '');
+    formData.append('name', product.name);
+    formData.append('description', product.description || '');
+    formData.append('price', product.price?.toString() || '');
+    formData.append('stock', product.stock?.toString() || '');
+    formData.append('brand', product.brand || '');
+    formData.append('category', product.category || '');
+
+    Array.from(this.selectedImages).forEach((image) =>
+      formData.append('image', image)
     );
+
+    return formData;
   }
 }

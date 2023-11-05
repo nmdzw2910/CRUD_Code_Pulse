@@ -8,13 +8,15 @@ import { Product } from 'src/app/core/models/domain/product';
   providedIn: 'root',
 })
 export class ProductService {
+  private baseUrl = `${environment.apiEndpoint}/products`;
+
   constructor(private http: HttpClient) {}
 
   getAllProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${environment.apiEndpoint}/products`);
+    return this.http.get<Product[]>(`${this.baseUrl}`);
   }
 
-  upsertProduct(model: Product): Observable<void> {
-    return this.http.put<void>(`${environment.apiEndpoint}/products`, model);
+  upsertProduct(model: FormData): Observable<Product> {
+    return this.http.put<Product>(`${this.baseUrl}`, model);
   }
 }
