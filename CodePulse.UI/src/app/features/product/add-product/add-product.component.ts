@@ -36,7 +36,9 @@ export class AddProductComponent {
 
   createFormData(product: Product): FormData {
     const formData = new FormData();
-    formData.append('id', product.id || '');
+    if (product.id) {
+      formData.append('id', product.id || '');
+    }
     formData.append('name', product.name);
     formData.append('description', product.description || '');
     formData.append('price', product.price?.toString() || '');

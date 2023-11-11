@@ -7,7 +7,6 @@ namespace CodePulse.API.Models.DTO
 {
     public class ProductDto
     {
-        [Required]
         public Guid Id { get; set; } = Guid.Empty;
         [Required]
         public string Name { get; set; } = string.Empty;

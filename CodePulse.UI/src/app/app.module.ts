@@ -12,6 +12,7 @@ import { HeaderComponent } from './core/components/header/header.component';
 import { BaseImageComponent } from './base/base-image/base-image.component';
 import { AddProductComponent } from './features/product/add-product/add-product.component';
 import { ProductListComponent } from './features/product/product-list/product-list.component';
+import { FooterComponent } from './core/components/footer/footer.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { ProductListComponent } from './features/product/product-list/product-li
     BaseImageComponent,
     AddProductComponent,
     ProductListComponent,
+    FooterComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],
