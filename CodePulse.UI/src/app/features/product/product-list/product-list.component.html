@@ -15,7 +15,6 @@
             <select class="form-control" id="sortSelect">
               <option value="name">Name</option>
               <option value="price">Price</option>
-              <!-- Add more sorting options as needed -->
             </select>
           </div>
           <div class="form-group">
@@ -35,15 +34,42 @@
           <div
             *ngFor="let product of products"
             class="col-md-auto product-item me-3"
+            (mouseenter)="setHoveredProduct(product.id)"
+            (mouseleave)="resetHoveredProduct()"
+            (click)="goToProductDetail(product.id)"
           >
-            <div class="card mb-3">
+            <div class="card mb-5">
+              <div
+                id="carouselExample"
+                class="carousel slide"
+                data-bs-ride="carousel"
+              >
+                <div class="carousel-inner">
+                  <div
+                    *ngFor="let image of product.productImages; let i = index"
+                    class="carousel-item"
+                    [ngClass]="{ active: i === 0 }"
+                  >
+                    <base-image
+                      [imageUrl]="image.url"
+                      altText="ProductImage"
+                    ></base-image>
+                  </div>
+                </div>
+              </div>
+
+              <a
+                *ngIf="isHovered(product)"
+                [routerLink]="['/admin/products/edit', product.id]"
+                class="edit-button position-absolute top-0 end-0 mt-2 me-2"
+              >
+                <i class="fa fa-pencil"></i>
+              </a>
+
               <div class="card-body">
                 <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text">{{ product.description }}</p>
                 <p class="card-text">Price: ${{ product.price }}</p>
-                <p class="card-text">Stock: {{ product.stock }}</p>
-                <p class="card-text">Brand: {{ product.brand }}</p>
-                <p class="card-text">Category: {{ product.category }}</p>
               </div>
             </div>
           </div>

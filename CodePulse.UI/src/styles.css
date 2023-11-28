@@ -1,7 +1,9 @@
+@import "./mixins/colors.css";
+
 .container {
   margin-bottom: 20px;
 }
 
 .required {
-  color: red;
+  color: var(--red-5);
 }
