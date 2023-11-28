@@ -1,3 +1,20 @@
 .product-item {
-  min-width: 300px;
+  width: 300px;
+  .edit-button {
+    color: var(--black-3);
+    padding: 0 4px;
+    background-color: var(--white-3);
+  }
+  .edit-button:hover {
+    background-color: var(--white-4);
+  }
+}
+
+.product-item:hover {
+  cursor: pointer;
+}
+
+.product-item:hover {
+  transform: scale(1.1);
+  transition: 0.3s ease-in-out;
 }

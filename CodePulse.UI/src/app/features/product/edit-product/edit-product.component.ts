@@ -1,21 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/core/models/domain/product';
 import { ProductService } from '../service/product.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-add-product',
-  templateUrl: './add-product.component.html',
-  styleUrls: ['./add-product.component.css'],
+  selector: 'app-edit-product',
+  templateUrl: './edit-product.component.html',
+  styleUrls: ['./edit-product.component.css'],
 })
-export class AddProductComponent {
+export class EditProductComponent implements OnInit {
+  productId: string = '';
   product: Product;
   selectedImages: File[] = [];
 
-  constructor(private productService: ProductService, private router: Router) {
+  constructor(
+    private productService: ProductService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     this.product = {
       name: '',
     };
+  }
+
+  ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      this.productId = params['id'];
+    });
+
+    this.productService.getProductById(this.productId).subscribe({
+      next: (response) => {
+        this.product = response;
+      },
+    });
   }
 
   onImageUpload(event: any) {
@@ -28,7 +45,6 @@ export class AddProductComponent {
       next: (response) => {
         this.product = response;
         console.log('success');
-        this.router.navigate([`admin/products/edit/${this.product.id}`]);
       },
       error: (error) => {
         console.error('Error:', error);

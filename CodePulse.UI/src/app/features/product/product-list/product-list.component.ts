@@ -11,6 +11,7 @@ export class ProductListComponent implements OnInit {
   products: Product[] = [];
   successMessage: string = '';
   errorMessage: string = '';
+  hoveredProductId: string | undefined = '';
 
   constructor(private productService: ProductService) {}
 
@@ -25,5 +26,23 @@ export class ProductListComponent implements OnInit {
         console.error('Error:', error);
       },
     });
+  }
+
+  goToProductDetail(productId?: string) {
+    // Implement navigation logic to the product detail page
+    // e.g., using Angular Router
+    // this.router.navigate(['/product', productId]);
+  }
+
+  setHoveredProduct(productId?: string): void {
+    this.hoveredProductId = productId;
+  }
+
+  resetHoveredProduct(): void {
+    this.hoveredProductId = '';
+  }
+
+  isHovered(product: Product): boolean {
+    return this.hoveredProductId === product.id;
   }
 }
