@@ -12,6 +12,7 @@ export class UpsertProductComponent implements OnInit {
   productId: string = '';
   product: Product;
   selectedImages: File[] = [];
+  isEdit: boolean = false;
 
   constructor(
     private productService: ProductService,
@@ -25,13 +26,12 @@ export class UpsertProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      this.productId = params['id'];
-    });
+      this.isEdit = params['id'] !== undefined;
 
-    this.productService.getProductById(this.productId).subscribe({
-      next: (response) => {
-        this.product = response;
-      },
+      if (this.isEdit) {
+        this.productId = params['id'];
+        this.loadProduct(this.productId);
+      }
     });
   }
 
@@ -70,5 +70,16 @@ export class UpsertProductComponent implements OnInit {
     );
 
     return formData;
+  }
+
+  private loadProduct(productId: string): void {
+    this.productService.getProductById(productId).subscribe({
+      next: (response) => {
+        this.product = response;
+      },
+      error: (error) => {
+        console.error('Error fetching product:', error);
+      },
+    });
   }
 }
