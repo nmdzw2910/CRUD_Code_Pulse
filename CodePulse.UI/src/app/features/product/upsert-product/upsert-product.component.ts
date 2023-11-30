@@ -1,21 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/core/models/domain/product';
 import { ProductService } from '../service/product.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-add-product',
-  templateUrl: './add-product.component.html',
-  styleUrls: ['./add-product.component.css'],
+  selector: 'upsert-product',
+  templateUrl: './upsert-product.component.html',
+  styleUrls: ['./upsert-product.component.css'],
 })
-export class AddProductComponent {
+export class UpsertProductComponent implements OnInit {
+  productId: string = '';
   product: Product;
   selectedImages: File[] = [];
 
-  constructor(private productService: ProductService, private router: Router) {
+  constructor(
+    private productService: ProductService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
     this.product = {
       name: '',
     };
+  }
+
+  ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      this.productId = params['id'];
+    });
+
+    this.productService.getProductById(this.productId).subscribe({
+      next: (response) => {
+        this.product = response;
+      },
+    });
   }
 
   onImageUpload(event: any) {
