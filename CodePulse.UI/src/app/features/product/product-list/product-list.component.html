@@ -29,8 +29,10 @@
           </div>
         </form>
       </div>
+
       <div class="list-view col-md-10">
-        <div class="row">
+        <base-loading *ngIf="loading" size="lg"></base-loading>
+        <div *ngIf="!loading" class="row">
           <div
             *ngFor="let product of products"
             class="col-md-auto product-item me-3"
@@ -57,15 +59,13 @@
                   </div>
                 </div>
               </div>
-
               <a
                 *ngIf="isHovered(product)"
                 [routerLink]="['/admin/products/edit', product.id]"
                 class="edit-button position-absolute top-0 end-0 mt-2 me-2"
               >
-                <i class="fa fa-pencil"></i>
+                <i class="fa-solid fa-pencil"></i>
               </a>
-
               <div class="card-body">
                 <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text">{{ product.description }}</p>

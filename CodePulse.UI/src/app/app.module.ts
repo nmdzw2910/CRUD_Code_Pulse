@@ -14,6 +14,7 @@ import { ProductListComponent } from './features/product/product-list/product-li
 import { FooterComponent } from './core/components/footer/footer.component';
 import { EditProductComponent } from './features/product/edit-product/edit-product.component';
 import { ProductDetailComponent } from './features/product/product-detail/product-detail.component';
+import { BaseLoadingComponent } from './base/base-loading/base-loading.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { ProductDetailComponent } from './features/product/product-detail/produc
     FooterComponent,
     EditProductComponent,
     ProductDetailComponent,
+    BaseLoadingComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [],

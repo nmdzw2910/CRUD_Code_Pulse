@@ -1,0 +1,18 @@
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 50px 0;
+}
+
+.loading.sm {
+  font-size: 25px;
+}
+
+.loading.md {
+  font-size: 50px;
+}
+
+.loading.lg {
+  font-size: 100px;
+}

@@ -4,6 +4,7 @@
     color: var(--black-3);
     padding: 0 4px;
     background-color: var(--white-3);
+    border-radius: 10%;
   }
   .edit-button:hover {
     background-color: var(--white-4);
