@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/core/models/domain/product';
 import { ProductService } from '../service/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'upsert-product',
@@ -9,15 +11,20 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./upsert-product.component.css'],
 })
 export class UpsertProductComponent implements OnInit {
+  isLoading: boolean = false;
   productId: string = '';
   product: Product;
   selectedImages: File[] = [];
   isEdit: boolean = false;
+  imagePreviews: any[] = [];
+  isUpdatingPicture: boolean = false;
 
   constructor(
     private productService: ProductService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService,
+    private sanitizer: DomSanitizer
   ) {
     this.product = {
       name: '',
@@ -36,19 +43,24 @@ export class UpsertProductComponent implements OnInit {
   }
 
   onImageUpload(event: any) {
+    this.isUpdatingPicture = true;
     this.selectedImages = event.target.files;
+    this.getPreviewPictures(this.selectedImages);
   }
 
   onFormSubmit(): void {
+    this.isLoading = true;
     const formData = this.upsertFormData(this.product);
     this.productService.upsertProduct(formData).subscribe({
       next: (response) => {
         this.product = response;
-        console.log('success');
+        this.toastr.success('success');
         this.router.navigate([`admin/products/edit/${this.product.id}`]);
+        this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error:', error);
+        this.toastr.error(error);
+        this.isLoading = false;
       },
     });
   }
@@ -73,13 +85,33 @@ export class UpsertProductComponent implements OnInit {
   }
 
   private loadProduct(productId: string): void {
+    this.isLoading = true;
     this.productService.getProductById(productId).subscribe({
       next: (response) => {
         this.product = response;
+        this.isLoading = false;
+        this.isUpdatingPicture = false;
+        this.getPreviewPictures(this.selectedImages);
       },
       error: (error) => {
-        console.error('Error fetching product:', error);
+        this.toastr.error(error);
+        this.isLoading = false;
       },
     });
+  }
+
+  private getPreviewPictures(images: File[]): void {
+    this.imagePreviews = [];
+
+    for (const img of images) {
+      const reader = new FileReader();
+
+      reader.onload = (e: any) => {
+        const imageUrl = this.sanitizer.bypassSecurityTrustUrl(e.target.result);
+        this.imagePreviews.push(imageUrl);
+      };
+
+      reader.readAsDataURL(img);
+    }
   }
 }

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { UpsertProductComponent } from './upsert-product.component';
 
 describe('UpsertProductComponent', () => {

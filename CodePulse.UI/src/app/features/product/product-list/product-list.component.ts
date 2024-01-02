@@ -12,22 +12,22 @@ export class ProductListComponent implements OnInit {
   successMessage: string = '';
   errorMessage: string = '';
   hoveredProductId: string | undefined = '';
-  loading: boolean = false;
+  isLoading: boolean = false;
 
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
-    this.loading = true;
+    this.isLoading = true;
     this.productService.getAllProducts().subscribe({
       next: (response) => {
         this.successMessage = 'Product added successfully';
         this.products = response;
-        this.loading = false;
+        this.isLoading = false;
       },
       error: (error) => {
         this.errorMessage = 'Error adding the product';
         console.error('Error:', error);
-        this.loading = false;
+        this.isLoading = false;
       },
     });
   }

@@ -1,4 +1,5 @@
 @import "./mixins/colors.css";
+@import "ngx-toastr/toastr";
 
 .container {
   margin-bottom: 20px;

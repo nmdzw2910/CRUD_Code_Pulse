@@ -14,6 +14,8 @@ import { ProductListComponent } from './features/product/product-list/product-li
 import { FooterComponent } from './core/components/footer/footer.component';
 import { ProductDetailComponent } from './features/product/product-detail/product-detail.component';
 import { BaseLoadingComponent } from './base/base-loading/base-loading.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,18 @@ import { BaseLoadingComponent } from './base/base-loading/base-loading.component
     ProductDetailComponent,
     BaseLoadingComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      preventDuplicates: true,
+      progressBar: true,
+    }),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

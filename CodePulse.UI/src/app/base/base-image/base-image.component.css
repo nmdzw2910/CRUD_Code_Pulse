@@ -1,3 +1,8 @@
 .img-icon {
   width: 100px;
 }
+
+.img-thumbnail {
+  width: 200px;
+  margin: 20px;
+}
