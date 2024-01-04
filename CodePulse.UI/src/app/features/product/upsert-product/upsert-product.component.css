@@ -1,0 +1,8 @@
+.image-container {
+  overflow: auto;
+  max-height: 685px;
+}
+
+.preview-container {
+  text-align: center;
+}

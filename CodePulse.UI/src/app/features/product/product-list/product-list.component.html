@@ -29,8 +29,10 @@
           </div>
         </form>
       </div>
+
       <div class="list-view col-md-10">
-        <div class="row">
+        <base-loading *ngIf="isLoading" size="lg"></base-loading>
+        <div *ngIf="!isLoading" class="row">
           <div
             *ngFor="let product of products"
             class="col-md-auto product-item me-3"
@@ -39,33 +41,18 @@
             (click)="goToProductDetail(product.id)"
           >
             <div class="card mb-5">
-              <div
-                id="carouselExample"
-                class="carousel slide"
-                data-bs-ride="carousel"
-              >
-                <div class="carousel-inner">
-                  <div
-                    *ngFor="let image of product.productImages; let i = index"
-                    class="carousel-item"
-                    [ngClass]="{ active: i === 0 }"
-                  >
-                    <base-image
-                      [imageUrl]="image.url"
-                      altText="ProductImage"
-                    ></base-image>
-                  </div>
-                </div>
-              </div>
-
+              <base-image
+                *ngIf="product.productImages"
+                [imageUrl]="product.productImages[0].url"
+                altText="ProductImage"
+              ></base-image>
               <a
                 *ngIf="isHovered(product)"
                 [routerLink]="['/admin/products/edit', product.id]"
                 class="edit-button position-absolute top-0 end-0 mt-2 me-2"
               >
-                <i class="fa fa-pencil"></i>
+                <i class="fa-solid fa-pencil"></i>
               </a>
-
               <div class="card-body">
                 <h5 class="card-title">{{ product.name }}</h5>
                 <p class="card-text">{{ product.description }}</p>

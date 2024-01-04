@@ -9,11 +9,13 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './core/components/header/header.component';
 import { BaseImageComponent } from './base/base-image/base-image.component';
-import { AddProductComponent } from './features/product/add-product/add-product.component';
+import { UpsertProductComponent } from './features/product/upsert-product/upsert-product.component';
 import { ProductListComponent } from './features/product/product-list/product-list.component';
 import { FooterComponent } from './core/components/footer/footer.component';
-import { EditProductComponent } from './features/product/edit-product/edit-product.component';
 import { ProductDetailComponent } from './features/product/product-detail/product-detail.component';
+import { BaseLoadingComponent } from './base/base-loading/base-loading.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -23,13 +25,24 @@ import { ProductDetailComponent } from './features/product/product-detail/produc
     AddCategoryComponent,
     HeaderComponent,
     BaseImageComponent,
-    AddProductComponent,
+    UpsertProductComponent,
     ProductListComponent,
     FooterComponent,
-    EditProductComponent,
     ProductDetailComponent,
+    BaseLoadingComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      preventDuplicates: true,
+      progressBar: true,
+    }),
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

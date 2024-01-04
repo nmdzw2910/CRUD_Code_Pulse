@@ -1,4 +1,5 @@
 @import "./mixins/colors.css";
+@import "ngx-toastr/toastr";
 
 .container {
   margin-bottom: 20px;
@@ -6,4 +7,13 @@
 
 .required {
   color: var(--red-5);
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.img-preview {
+  width: 250px;
+  margin: 20px;
 }

@@ -32,12 +32,12 @@ namespace CodePulse.API.Services
             return mapper.Map<ProductDto>(product);
         }
 
-        public async Task<ProductDto> Update(Product existingProduct, ProductDto request)
+        public async Task<ProductDto> Update(Product existingProduct, ProductDto request, IFormFileCollection images)
         {
             mapper.Map(request, existingProduct);
 
             existingProduct.UpdatedAt = DateTime.Now;
-
+            existingProduct.ProductImages = await UploadImages(images);
             await productRepository.UpdateAsync(existingProduct);
             return mapper.Map<ProductDto>(existingProduct);
         }
@@ -48,7 +48,7 @@ namespace CodePulse.API.Services
 
             if (product.Id != Guid.Empty && existingProduct != null)
             {
-                return await Update(existingProduct, product);
+                return await Update(existingProduct, product, images);
             }
             return await Create(product, images);
         }
