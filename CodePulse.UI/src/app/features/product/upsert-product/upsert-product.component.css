@@ -1,4 +1,8 @@
-.img-thumbnail {
-  width: 200px;
-  margin: 20px;
+.image-container {
+  overflow: auto;
+  max-height: 685px;
+}
+
+.preview-container {
+  text-align: center;
 }
