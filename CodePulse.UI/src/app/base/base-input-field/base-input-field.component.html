@@ -1,0 +1,16 @@
+<div class="mb-3">
+  <label class="form-label" [for]="inputId">
+    {{ label }}
+    <span *ngIf="required" class="required">*</span>
+  </label>
+  <input
+    [type]="type"
+    [id]="inputId"
+    class="form-control"
+    [name]="name"
+    [value]="value"
+    [disabled]="isDisabled"
+    [required]="required"
+    (input)="updateValue($event)"
+  />
+</div>
