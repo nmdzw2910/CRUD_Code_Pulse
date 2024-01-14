@@ -16,6 +16,7 @@ import { ProductDetailComponent } from './features/product/product-detail/produc
 import { BaseLoadingComponent } from './base/base-loading/base-loading.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BaseButtonComponent } from './base/base-button/base-button.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     FooterComponent,
     ProductDetailComponent,
     BaseLoadingComponent,
+    BaseButtonComponent,
   ],
   imports: [
     BrowserModule,

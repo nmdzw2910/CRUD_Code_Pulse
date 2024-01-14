@@ -18,6 +18,7 @@ export class UpsertProductComponent implements OnInit {
   isEdit: boolean = false;
   imagePreviews: any[] = [];
   isUpdatingPicture: boolean = false;
+  isSaving: boolean = false;
 
   constructor(
     private productService: ProductService,
@@ -49,18 +50,18 @@ export class UpsertProductComponent implements OnInit {
   }
 
   onFormSubmit(): void {
-    this.isLoading = true;
+    this.isSaving = true;
     const formData = this.upsertFormData(this.product);
     this.productService.upsertProduct(formData).subscribe({
       next: (response) => {
         this.product = response;
         this.toastr.success('success');
         this.router.navigate([`admin/products/edit/${this.product.id}`]);
-        this.isLoading = false;
+        this.isSaving = false;
       },
       error: (error) => {
         this.toastr.error(error);
-        this.isLoading = false;
+        this.isSaving = false;
       },
     });
   }
