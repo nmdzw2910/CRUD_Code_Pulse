@@ -1,0 +1,15 @@
+<button
+  [ngClass]="customClass"
+  [class.submit]="type === 'submit'"
+  [class.cancel]="type === 'cancel'"
+  [class.default]="!type || type === 'default'"
+  (click)="handleClick()"
+  [attr.disabled]="loading ? true : null"
+>
+  <ng-container *ngIf="!loading; else loadingTemplate">
+    {{ buttonText }}
+  </ng-container>
+  <ng-template #loadingTemplate>
+    <span class="loading-spinner"></span>
+  </ng-template>
+</button>
