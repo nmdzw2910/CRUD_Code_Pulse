@@ -17,6 +17,7 @@ import { BaseLoadingComponent } from './base/base-loading/base-loading.component
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BaseButtonComponent } from './base/base-button/base-button.component';
+import { BaseInputFieldComponent } from './base/base-input-field/base-input-field.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { BaseButtonComponent } from './base/base-button/base-button.component';
     ProductDetailComponent,
     BaseLoadingComponent,
     BaseButtonComponent,
+    BaseInputFieldComponent,
   ],
   imports: [
     BrowserModule,

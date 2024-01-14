@@ -37,7 +37,10 @@ namespace CodePulse.API.Services
             mapper.Map(request, existingProduct);
 
             existingProduct.UpdatedAt = DateTime.Now;
-            existingProduct.ProductImages = await UploadImages(images);
+            if (images.Count > 0)
+            {
+                existingProduct.ProductImages = await UploadImages(images);
+            }
             await productRepository.UpdateAsync(existingProduct);
             return mapper.Map<ProductDto>(existingProduct);
         }
