@@ -1,1 +1,85 @@
-<p>product-detail works!</p>
+<div class="container mt-4">
+  <div class="row border">
+    <div class="col-md-5">
+      <base-carousel [images]="this.imagesUrl"></base-carousel>
+    </div>
+    <div class="col-md-4 detail-info">
+      <div class="product-name">
+        <strong>{{ product.name }}</strong>
+      </div>
+      <div class="product-brand">Brand: {{ product.brand }}</div>
+      <div class="product-price">
+        <span class="price-highlight">${{ product.price }}</span>
+      </div>
+      <div class="product-stock">Stock: {{ product.stock }}</div>
+      <div class="product-category">Category: {{ product.category }}</div>
+      <form>
+        <label for="quantity">Quantity:</label>
+        <div class="quantity-input">
+          <button type="button" (click)="decreaseQuantity()">-</button>
+          <input
+            type="number"
+            id="quantity"
+            name="quantity"
+            [(ngModel)]="selectedQuantity"
+            min="1"
+            class="number-input"
+          />
+          <button type="button" (click)="increaseQuantity()">+</button>
+        </div>
+        <div class="row">
+          <base-button
+            class="col-md-4 add-to-cart"
+            text="Buy Now"
+            type="primary"
+            icon="fa-solid fa-credit-card"
+            (click)="buyNow()"
+          ></base-button>
+          <base-button
+            class="col-md-4 add-to-cart"
+            text="Add to Cart"
+            type="secondary"
+            icon="fa-solid fa-cart-shopping"
+            (click)="addToCart()"
+          ></base-button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-3 information-container">
+      More Information
+      <div class="information">
+        <div class="info">
+          <i class="fa-solid fa-screwdriver-wrench"></i> Warranty Procedure
+        </div>
+        <div class="info">
+          <i class="fa-solid fa-truck"></i> Nationwide Delivery
+        </div>
+        <div class="info">
+          <i class="fa-solid fa-circle-check"></i> 100% Genuine Products
+        </div>
+        <div class="info">
+          <i class="fa-solid fa-comments"></i> Chat with us
+          <div class="contact-info">
+            <p class="phone">
+              Phone: <a href="tel:your-phone-number">123-456-789</a>
+            </p>
+            <ul class="social-media">
+              <li>
+                <a href="https://www.facebook.com/" target="_blank">
+                  <i class="fa-brands fa-facebook" alt="Twitter"></i>
+                  Facebook
+                </a>
+              </li>
+              <li>
+                <a href="https://www.twitter.com/" target="_blank">
+                  <i class="fa-brands fa-twitter" alt="twitter"></i>
+                  Twitter
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

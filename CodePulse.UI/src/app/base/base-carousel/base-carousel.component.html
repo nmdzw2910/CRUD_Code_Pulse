@@ -1,0 +1,29 @@
+<base-loading *ngIf="!currentImage" size="md"></base-loading>
+<div
+  *ngIf="currentImage"
+  class="carousel-container"
+  (mouseenter)="onMouseEnter()"
+  (mouseleave)="onMouseLeave()"
+>
+  <div class="carousel-main">
+    <img [src]="currentImage" alt="Slide" />
+    <div *ngIf="isHovered" class="carousel-controls">
+      <button class="control-btn prev-btn" (click)="prev()">
+        <i class="fa-solid fa-arrow-left"></i>
+      </button>
+      <button class="control-btn next-btn" (click)="next()">
+        <i class="fa-solid fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+  <div class="carousel-thumbnails">
+    <div
+      *ngFor="let image of imagesUrl"
+      (click)="changeImage(image)"
+      [class.active]="image === currentImage"
+    >
+      <div class="thumnail-box"></div>
+      <img [src]="image" alt="Thumbnail" />
+    </div>
+  </div>
+</div>

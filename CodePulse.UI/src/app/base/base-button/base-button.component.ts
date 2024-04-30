@@ -6,10 +6,11 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./base-button.component.css'],
 })
 export class BaseButtonComponent {
-  @Input() type: 'submit' | 'cancel' | 'default' = 'default';
-  @Input() customText: string = 'Click';
-  @Input() customColor: string = 'gray';
-  @Input() customClass: string = '';
+  @Input() type: 'submit' | 'cancel' | 'primary' | 'secondary' | 'default' =
+    'default';
+  @Input() text: string = 'Click';
+  @Input() icon: string = '';
+  @Input() class: string = '';
   @Input() loading: boolean = false;
   @Output() buttonClick: EventEmitter<void> = new EventEmitter<void>();
 
@@ -19,7 +20,7 @@ export class BaseButtonComponent {
     } else if (this.type === 'cancel') {
       return 'Cancel';
     } else {
-      return this.customText;
+      return this.text;
     }
   }
 

@@ -20,7 +20,7 @@ const routes: Routes = [
     component: UpsertProductComponent,
   },
   {
-    path: 'admin/products/detail/:id',
+    path: 'admin/product/:id',
     component: ProductDetailComponent,
   },
   {

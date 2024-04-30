@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Product } from 'src/app/core/models/domain/product';
 import { ProductService } from '../service/product.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -14,7 +15,7 @@ export class ProductListComponent implements OnInit {
   hoveredProductId: string | undefined = '';
   isLoading: boolean = false;
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private router: Router) {}
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -33,9 +34,7 @@ export class ProductListComponent implements OnInit {
   }
 
   goToProductDetail(productId?: string) {
-    // Implement navigation logic to the product detail page
-    // e.g., using Angular Router
-    // this.router.navigate(['/product', productId]);
+    this.router.navigate(['admin/product', productId]);
   }
 
   setHoveredProduct(productId?: string): void {

@@ -18,6 +18,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BaseButtonComponent } from './base/base-button/base-button.component';
 import { BaseInputFieldComponent } from './base/base-input-field/base-input-field.component';
+import { BaseCarouselComponent } from './base/base-carousel/base-carousel.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { BaseInputFieldComponent } from './base/base-input-field/base-input-fiel
     BaseLoadingComponent,
     BaseButtonComponent,
     BaseInputFieldComponent,
+    BaseCarouselComponent,
   ],
   imports: [
     BrowserModule,
