@@ -41,6 +41,13 @@
   --red-4: #ef5350;
   --red-5: #f44336;
 
+  /* Green */
+  --green-1: #c8e6c9;
+  --green-2: #a5d6a7;
+  --green-3: #81c784;
+  --green-4: #66bb6a;
+  --green-5: #4caf50;
+
   /* Error status */
   --error-color: #ff0000;
   --error-background: #ffdcdc;
