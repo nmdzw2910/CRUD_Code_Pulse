@@ -9,11 +9,11 @@ namespace CodePulse.API.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly ICategoryRepository categoryRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
         public CategoriesController(ICategoryRepository categoryRepository)
         {
-            this.categoryRepository = categoryRepository;
+            this._categoryRepository = categoryRepository;
         }
 
         // POST: api/categories
@@ -27,7 +27,7 @@ namespace CodePulse.API.Controllers
                 Description = request.Description,
             };
 
-            await categoryRepository.CreateAsync(category);
+            await _categoryRepository.CreateAsync(category);
 
             // Map Domain Model to DTO
 
@@ -45,7 +45,7 @@ namespace CodePulse.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllCategories()
         {
-            var categories = await categoryRepository.GetAllAsync();
+            var categories = await _categoryRepository.GetAllAsync();
 
             if (categories == null || categories.Count == 0)
             {
@@ -67,7 +67,7 @@ namespace CodePulse.API.Controllers
         public async Task<IActionResult> GetCategoryById(Guid id)
         {
             // Find the category by ID
-            var category = await categoryRepository.GetByIdAsync(id);
+            var category = await _categoryRepository.GetByIdAsync(id);
 
             if (category == null)
             {
@@ -90,7 +90,7 @@ namespace CodePulse.API.Controllers
         public async Task<IActionResult> UpdateCategory(Guid id, UpdateCategoryRequestDto request)
         {
             // Find the category by ID
-            var existingCategory = await categoryRepository.GetByIdAsync(id);
+            var existingCategory = await _categoryRepository.GetByIdAsync(id);
 
             if (existingCategory == null)
             {
@@ -102,7 +102,7 @@ namespace CodePulse.API.Controllers
             existingCategory.Description = request.Description ?? existingCategory.Description;
 
             // Call the repository to update the category
-            await categoryRepository.UpdateAsync(existingCategory);
+            await _categoryRepository.UpdateAsync(existingCategory);
 
             // Map the updated category to DTO
             var updatedCategoryDto = new CategoryDto
@@ -120,7 +120,7 @@ namespace CodePulse.API.Controllers
         public async Task<IActionResult> DeleteCategory(Guid id)
         {
             // Find the category by ID
-            var existingCategory = await categoryRepository.GetByIdAsync(id);
+            var existingCategory = await _categoryRepository.GetByIdAsync(id);
 
             if (existingCategory == null)
             {
@@ -128,7 +128,7 @@ namespace CodePulse.API.Controllers
             }
 
             // Call the repository to delete the category
-            await categoryRepository.DeleteAsync(existingCategory);
+            await _categoryRepository.DeleteAsync(existingCategory);
 
             // You can return a success message or an appropriate response
             return Ok($"Category {existingCategory.Name} has been deleted.");
