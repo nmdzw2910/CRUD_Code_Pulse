@@ -44,7 +44,7 @@ namespace CodePulse.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("CodePulse.API.Models.Domain.Order", b =>
@@ -78,7 +78,7 @@ namespace CodePulse.API.Migrations
 
                     b.HasIndex("ShippingInformationId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("CodePulse.API.Models.Domain.OrderDetail", b =>
@@ -103,7 +103,7 @@ namespace CodePulse.API.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", (string)null);
                 });
 
             modelBuilder.Entity("CodePulse.API.Models.Domain.Product", b =>
@@ -139,7 +139,7 @@ namespace CodePulse.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("CodePulse.API.Models.Domain.ProductImage", b =>
@@ -159,7 +159,7 @@ namespace CodePulse.API.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductImages");
+                    b.ToTable("ProductImages", (string)null);
                 });
 
             modelBuilder.Entity("CodePulse.API.Models.Domain.ShippingInformation", b =>
@@ -194,7 +194,7 @@ namespace CodePulse.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShippingInformations");
+                    b.ToTable("ShippingInformations", (string)null);
                 });
 
             modelBuilder.Entity("CodePulse.API.Models.Domain.Order", b =>

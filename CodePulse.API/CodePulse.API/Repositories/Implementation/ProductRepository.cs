@@ -7,40 +7,40 @@ namespace CodePulse.API.Repositories.Implementation
 {
     public class ProductRepository : IProductRepository
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly ApplicationDbContext _dbContext;
 
         public ProductRepository(ApplicationDbContext dbContext)
         {
-            this.dbContext = dbContext;
+            this._dbContext = dbContext;
         }
 
         public async Task<List<Product>> GetAllAsync()
         {
-            List<Product> categories = await dbContext.Products.Include(p => p.ProductImages).ToListAsync();
+            var categories = await _dbContext.Products.Include(p => p.ProductImages).ToListAsync();
 
             return categories;
         }
 
-        public async Task<Product> GetByIdAsync(Guid id)
+        public async Task<Product?> GetByIdAsync(Guid id)
         {
-            var product = await dbContext.Products.Include(p => p.ProductImages).FirstOrDefaultAsync(p => p.Id == id);
+            var product = await _dbContext.Products.Include(p => p.ProductImages).FirstOrDefaultAsync(p => p.Id == id);
             return product;
         }
 
         public async Task<Product> CreateAsync(Product product)
         {
-            await dbContext.Products.AddAsync(product);
-            await dbContext.SaveChangesAsync();
+            await _dbContext.Products.AddAsync(product);
+            await _dbContext.SaveChangesAsync();
 
             return product;
         }
 
         public async Task<Product> UpdateAsync(Product product)
         {
-            dbContext.Attach(product);
-            dbContext.Entry(product).State = EntityState.Modified;
+            _dbContext.Attach(product);
+            _dbContext.Entry(product).State = EntityState.Modified;
 
-            await dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             return product;
         }
 
@@ -48,10 +48,10 @@ namespace CodePulse.API.Repositories.Implementation
         {
             if (product.ProductImages != null)
             {
-                dbContext.ProductImages.RemoveRange(product.ProductImages);
+                _dbContext.ProductImages.RemoveRange(product.ProductImages);
             }
-            dbContext.Products.Remove(product);
-            await dbContext.SaveChangesAsync();
+            _dbContext.Products.Remove(product);
+            await _dbContext.SaveChangesAsync();
             return product;
         }
     }

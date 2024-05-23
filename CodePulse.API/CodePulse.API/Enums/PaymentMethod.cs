@@ -2,7 +2,7 @@
 {
     public enum PaymentMethod
     {
-        COD,
+        Cod,
         BankTransfer,
         Momo
     }

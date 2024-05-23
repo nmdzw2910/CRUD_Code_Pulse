@@ -6,7 +6,7 @@ namespace CodePulse.API.Repositories.Interface
     {
         Task<Product> CreateAsync(Product product);
         Task<List<Product>> GetAllAsync();
-        Task<Product> GetByIdAsync(Guid id);
+        Task<Product?> GetByIdAsync(Guid id);
         Task<Product> UpdateAsync(Product product);
         Task<Product> DeleteAsync(Product product);
     }

@@ -13,6 +13,6 @@ namespace CodePulse.API.Data
         public DbSet<ProductImage> ProductImages { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
-        public DbSet<ShippingInformation> ShippingInformations { get; set; }
+        public DbSet<ShippingInformation> ShippingInformation { get; set; }
     }
 }

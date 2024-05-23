@@ -1,15 +1,16 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
-using CodePulse.API.Services;
+
+namespace CodePulse.API.Services;
 
 public class S3Service : IS3Service
 {
-    private const string bucketName = "nmd-code-pulse";
-    private readonly IAmazonS3 s3Client;
+    private const string BucketName = "nmd-code-pulse";
+    private readonly IAmazonS3 _s3Client;
 
     public S3Service(IAmazonS3 s3Client)
     {
-        this.s3Client = s3Client;
+        this._s3Client = s3Client;
     }
 
     public async Task<string> UploadImageToS3(IFormFile file, string path)
@@ -18,13 +19,13 @@ public class S3Service : IS3Service
 
         var putObjectRequest = new PutObjectRequest
         {
-            BucketName = bucketName,
+            BucketName = BucketName,
             Key = key,
             InputStream = file.OpenReadStream(),
             ContentType = file.ContentType
         };
 
-        await s3Client.PutObjectAsync(putObjectRequest);
+        await _s3Client.PutObjectAsync(putObjectRequest);
 
         return key;
     }

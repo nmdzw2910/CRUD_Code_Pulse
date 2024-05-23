@@ -7,15 +7,15 @@ namespace CodePulse.API.Repositories.Implementation
 {
     public class OrderRepository : IOrderRepository
     {
-        private readonly ApplicationDbContext dbContext;
+        private readonly ApplicationDbContext _dbContext;
 
         public OrderRepository(ApplicationDbContext dbContext)
         {
-            this.dbContext = dbContext;
+            this._dbContext = dbContext;
         }
-        public async Task<List<Order>> GetAllAsync()
+        public async Task<List<Order>?> GetAllAsync()
         {
-            List<Order> categories = await dbContext.Orders
+            List<Order>? categories = await _dbContext.Orders
                 .Include(o => o.OrderDetails)
                 .Include(o => o.ShippingInformation)
                 .ToListAsync();
@@ -23,18 +23,18 @@ namespace CodePulse.API.Repositories.Implementation
             return categories;
         }
 
-        public async Task<Order> GetByIdAsync(Guid id)
+        public async Task<Order?> GetByIdAsync(Guid id)
         {
-            var order = await dbContext.Orders
+            var order = await _dbContext.Orders
                 .Include(o => o.OrderDetails)
                 .Include(o => o.ShippingInformation)
                 .FirstOrDefaultAsync(p => p.Id == id);
             return order;
         }
 
-        public async Task<Order> GetByOrderNumberAsync(string orderNumber)
+        public async Task<Order?> GetByOrderNumberAsync(string orderNumber)
         {
-            var order = await dbContext.Orders
+            var order = await _dbContext.Orders
                 .Include(o => o.OrderDetails)
                 .Include(o => o.ShippingInformation)
                 .FirstOrDefaultAsync(p => p.OrderNumber == orderNumber);
@@ -43,45 +43,39 @@ namespace CodePulse.API.Repositories.Implementation
 
         public async Task<Order> CreateAsync(Order order)
         {
-            await dbContext.Orders.AddAsync(order);
-            await dbContext.SaveChangesAsync();
+            await _dbContext.Orders.AddAsync(order);
+            await _dbContext.SaveChangesAsync();
 
             return order;
         }
 
         public async Task<Order> UpdateAsync(Order order)
         {
-            dbContext.Attach(order);
-            dbContext.Entry(order).State = EntityState.Modified;
-            dbContext.Entry(order.ShippingInformation).State = EntityState.Modified;
+            _dbContext.Attach(order);
+            _dbContext.Entry(order).State = EntityState.Modified;
+            _dbContext.Entry(order.ShippingInformation).State = EntityState.Modified;
 
-            await dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
             return order;
         }
 
         public async Task<Order> DeleteAsync(Order order)
         {
-            if (order.OrderDetails != null)
-            {
-                dbContext.OrderDetails.RemoveRange(order.OrderDetails);
-            }
+            _dbContext.OrderDetails.RemoveRange(order.OrderDetails);
 
-            if (order.ShippingInformation != null)
-            {
-                dbContext.ShippingInformations.Remove(order.ShippingInformation);
-            }
+            _dbContext.ShippingInformation.Remove(order.ShippingInformation);
 
-            dbContext.Orders.Remove(order);
-            await dbContext.SaveChangesAsync();
+            _dbContext.Orders.Remove(order);
+            await _dbContext.SaveChangesAsync();
 
             return order;
         }
 
-        public async Task<string> GetLastOrderNumberForDateAsync(string currentDate)
+        public async Task<string?> GetLastOrderNumberForDateAsync(string currentDate)
         {
             {
-                var lastOrderNumber = await dbContext.Orders
-                    .Where(o => o.OrderNumber.StartsWith(currentDate))
+                var lastOrderNumber = await _dbContext.Orders
+                    .Where(o => o.OrderNumber != null && o.OrderNumber.StartsWith(currentDate))
                     .OrderByDescending(o => o.OrderNumber)
                     .Select(o => o.OrderNumber)
                     .FirstOrDefaultAsync();

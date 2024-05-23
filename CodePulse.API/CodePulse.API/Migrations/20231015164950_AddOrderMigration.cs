@@ -12,7 +12,7 @@ namespace CodePulse.API.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ShippingInformations",
+                name: "ShippingInformation",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -47,7 +47,7 @@ namespace CodePulse.API.Migrations
                     table.ForeignKey(
                         name: "FK_Orders_ShippingInformations_ShippingInformationId",
                         column: x => x.ShippingInformationId,
-                        principalTable: "ShippingInformations",
+                        principalTable: "ShippingInformation",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -94,7 +94,7 @@ namespace CodePulse.API.Migrations
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "ShippingInformations");
+                name: "ShippingInformation");
         }
     }
 }

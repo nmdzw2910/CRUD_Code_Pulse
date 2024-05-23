@@ -9,9 +9,9 @@ namespace CodePulse.API.Services
 {
     public class OrderService : IOrderService
     {
-        private readonly IOrderRepository orderRepository;
-        private readonly ApplicationDbContext dbContext;
-        private readonly IMapper mapper;
+        private readonly IOrderRepository _orderRepository;
+        private readonly ApplicationDbContext _dbContext;
+        private readonly IMapper _mapper;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="OrderService"/> class.
@@ -19,14 +19,14 @@ namespace CodePulse.API.Services
         /// <param name="orderRepository">IOrderRepository.</param>
         public OrderService(IOrderRepository orderRepository, ApplicationDbContext dbContext, IMapper mapper)
         {
-            this.orderRepository = orderRepository;
-            this.dbContext = dbContext;
-            this.mapper = mapper;
+            this._orderRepository = orderRepository;
+            this._dbContext = dbContext;
+            this._mapper = mapper;
         }
 
         public async Task<OrderDto> Upsert(OrderDto orderDto)
         {
-            var existingOrder = await orderRepository.GetByIdAsync(orderDto.Id);
+            var existingOrder = await _orderRepository.GetByIdAsync(orderDto.Id);
 
             if (orderDto.Id != Guid.Empty && existingOrder != null)
             {
@@ -37,24 +37,24 @@ namespace CodePulse.API.Services
 
         public async Task<OrderDto> Update(Order existingOrder, OrderDto request)
         {
-            if (dbContext.Entry(existingOrder.ShippingInformation).State != EntityState.Detached)
+            if (_dbContext.Entry(existingOrder.ShippingInformation).State != EntityState.Detached)
             {
-                dbContext.Entry(existingOrder.ShippingInformation).State = EntityState.Detached;
+                _dbContext.Entry(existingOrder.ShippingInformation).State = EntityState.Detached;
             }
 
-            mapper.Map(request, existingOrder);
+            _mapper.Map(request, existingOrder);
             existingOrder.UpdatedAt = DateTime.Now;
 
-            await orderRepository.UpdateAsync(existingOrder);
-            return mapper.Map<OrderDto>(existingOrder);
+            await _orderRepository.UpdateAsync(existingOrder);
+            return _mapper.Map<OrderDto>(existingOrder);
         }
 
         public async Task<OrderDto> Create(OrderDto request)
         {
-            var order = mapper.Map<Order>(request);
+            var order = _mapper.Map<Order>(request);
 
             string currentDate = DateTime.Now.ToString("ddMMyy");
-            string lastUsedOrderNumber = await orderRepository.GetLastOrderNumberForDateAsync(currentDate);
+            string? lastUsedOrderNumber = await _orderRepository.GetLastOrderNumberForDateAsync(currentDate);
             if (int.TryParse(lastUsedOrderNumber?.Substring(6, 4), out int lastOrderNumber))
             {
                 lastOrderNumber++;
@@ -69,8 +69,8 @@ namespace CodePulse.API.Services
             order.CreatedAt = DateTime.Now;
             order.OrderDetails = request.OrderDetails;
 
-            await orderRepository.CreateAsync(order);
-            return mapper.Map<OrderDto>(order);
+            await _orderRepository.CreateAsync(order);
+            return _mapper.Map<OrderDto>(order);
         } 
     }
 }

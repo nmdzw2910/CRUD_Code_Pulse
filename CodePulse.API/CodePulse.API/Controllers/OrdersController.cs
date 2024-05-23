@@ -10,15 +10,15 @@ namespace CodePulse.API.Controllers
     [ApiController]
     public class OrdersController : Controller
     {
-        private readonly IOrderRepository orderRepository;
-        private readonly IOrderService orderService;
-        private readonly IMapper mapper;
+        private readonly IOrderRepository _orderRepository;
+        private readonly IOrderService _orderService;
+        private readonly IMapper _mapper;
 
         public OrdersController(IOrderRepository orderRepository, IOrderService orderService, IMapper mapper)
         {
-            this.orderRepository = orderRepository;
-            this.orderService = orderService;
-            this.mapper = mapper;
+            this._orderRepository = orderRepository;
+            this._orderService = orderService;
+            this._mapper = mapper;
         }
 
         /// <summary>
@@ -27,13 +27,13 @@ namespace CodePulse.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllOrders()
         {
-            var orders = await orderRepository.GetAllAsync();
+            var orders = await _orderRepository.GetAllAsync();
 
             if (orders == null || orders.Count == 0)
             {
                 return NotFound("No orders found.");
             }
-            var orderDtos = mapper.Map<IEnumerable<OrderDto>>(orders);
+            var orderDtos = _mapper.Map<IEnumerable<OrderDto>>(orders);
 
             return Ok(orderDtos);
         }
@@ -42,17 +42,17 @@ namespace CodePulse.API.Controllers
         /// Retrieve an order by its unique identifier.
         /// </summary>
         /// <param name="id">The unique identifier of the order.</param>
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetOrderById(Guid id)
         {
-            var order = await orderRepository.GetByIdAsync(id);
+            var order = await _orderRepository.GetByIdAsync(id);
 
             if (order == null)
             {
                 return NotFound($"Order with ID {id} not found.");
             }
 
-            var orderDto = mapper.Map<OrderDto>(order);
+            var orderDto = _mapper.Map<OrderDto>(order);
 
             return Ok(orderDto);
         }
@@ -60,13 +60,13 @@ namespace CodePulse.API.Controllers
         [HttpGet("orderNumber/{orderNumber}")]
         public async Task<IActionResult> GetOrderByOrderNumber(string orderNumber)
         {
-            var order = await orderRepository.GetByOrderNumberAsync(orderNumber);
+            var order = await _orderRepository.GetByOrderNumberAsync(orderNumber);
 
             if (order == null)
             {
                 return NotFound($"Order with OrderNumber {orderNumber} not found.");
             }
-            var orderDto = mapper.Map<OrderDto>(order);
+            var orderDto = _mapper.Map<OrderDto>(order);
 
             return Ok(orderDto);
         }
@@ -77,12 +77,12 @@ namespace CodePulse.API.Controllers
         /// </summary>
         /// <param name="order">
         /// Body of a request must contain all necessary data about Order that will be created/updated.
-        /// The Id attribute is optional and when provided the existing Order with that id is overwritten.
+        /// The ID attribute is optional and when provided the existing Order with that id is overwritten.
         /// </param>
         [HttpPut]
-        public async Task<IActionResult> UpsertOrder(OrderDto request)
+        public async Task<IActionResult> UpsertOrder(OrderDto order)
         {
-            var response = await orderService.Upsert(request);
+            var response = await _orderService.Upsert(order);
 
             return Ok(response);
         }
@@ -91,17 +91,17 @@ namespace CodePulse.API.Controllers
         /// Delete an order by its unique identifier.
         /// </summary>
         /// <param name="id">The unique identifier of the order to delete.</param>
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteOrderById(Guid id)
         {
-            var existingOrder = await orderRepository.GetByIdAsync(id);
+            var existingOrder = await _orderRepository.GetByIdAsync(id);
 
             if (existingOrder == null)
             {
                 return NotFound($"Order with ID {id} not found.");
             }
 
-            await orderRepository.DeleteAsync(existingOrder);
+            await _orderRepository.DeleteAsync(existingOrder);
 
             return Ok($"Order {existingOrder.OrderNumber} has been deleted.");
         }
@@ -111,7 +111,7 @@ namespace CodePulse.API.Controllers
         /// </summary>
         /// <param name="ids">A collection of unique identifiers for the orders to delete.</param>
         [HttpDelete("bulkdelete")]
-        public async Task<IActionResult> BulkDeleteOrders([FromBody] List<Guid> ids)
+        public async Task<IActionResult> BulkDeleteOrders([FromBody] List<Guid>? ids)
         {
             if (ids == null || ids.Count == 0)
             {
@@ -120,11 +120,11 @@ namespace CodePulse.API.Controllers
 
             foreach (var id in ids)
             {
-                var existingProduct = await orderRepository.GetByIdAsync(id);
+                var existingProduct = await _orderRepository.GetByIdAsync(id);
 
                 if (existingProduct != null)
                 {
-                    await orderRepository.DeleteAsync(existingProduct);
+                    await _orderRepository.DeleteAsync(existingProduct);
                 }
             }
 
