@@ -63,7 +63,7 @@ namespace CodePulse.API.Controllers
         }
 
         // GET: api/categories/{id}
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         public async Task<IActionResult> GetCategoryById(Guid id)
         {
             // Find the category by ID
@@ -86,7 +86,7 @@ namespace CodePulse.API.Controllers
         }
 
         // PUT: api/categories/{id}
-        [HttpPut("{id}")]
+        [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateCategory(Guid id, UpdateCategoryRequestDto request)
         {
             // Find the category by ID
@@ -116,7 +116,7 @@ namespace CodePulse.API.Controllers
         }
 
         // DELETE: api/categories/{id}
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:guid}")]
         public async Task<IActionResult> DeleteCategory(Guid id)
         {
             // Find the category by ID

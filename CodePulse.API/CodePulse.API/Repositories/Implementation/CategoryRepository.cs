@@ -21,9 +21,9 @@ namespace CodePulse.API.Repositories.Implementation
             return category;
         }
 
-        public async Task<List<Category>> GetAllAsync()
+        public async Task<List<Category>?> GetAllAsync()
         {
-            List<Category> categories = await _dbContext.Categories.ToListAsync();
+            var categories = await _dbContext.Categories.ToListAsync();
 
             return categories;
         }
