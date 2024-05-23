@@ -13,16 +13,15 @@ namespace CodePulse.API.Test.UnitTest.Products
     public class ProductsControllerTests
     {
         private readonly Mock<IProductRepository> _mockProductRepository;
-        private readonly Mock<IProductService> _mockProductService;
         private readonly Mock<IMapper> _mockMapper;
         private readonly ProductsController _controller;
 
         public ProductsControllerTests()
         {
             _mockProductRepository = new Mock<IProductRepository>();
-            _mockProductService = new Mock<IProductService>();
+            Mock<IProductService> mockProductService = new();
             _mockMapper = new Mock<IMapper>();
-            _controller = new ProductsController(_mockProductRepository.Object, _mockProductService.Object, _mockMapper.Object);
+            _controller = new ProductsController(_mockProductRepository.Object, mockProductService.Object, _mockMapper.Object);
         }
 
         [Fact]
