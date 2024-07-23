@@ -197,7 +197,7 @@ namespace CodePulse.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShippingInformations");
+                    b.ToTable("ShippingInformation");
                 });
 
             modelBuilder.Entity("CodePulse.API.Models.Domain.Order", b =>

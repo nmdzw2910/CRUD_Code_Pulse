@@ -16,10 +16,10 @@ namespace CodePulse.API.Migrations
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_ShippingInformations",
-                table: "ShippingInformations");
+                table: "ShippingInformation");
 
             migrationBuilder.RenameTable(
-                name: "ShippingInformations",
+                name: "ShippingInformation",
                 newName: "ShippingInformation");
 
             migrationBuilder.AddPrimaryKey(
@@ -49,18 +49,18 @@ namespace CodePulse.API.Migrations
 
             migrationBuilder.RenameTable(
                 name: "ShippingInformation",
-                newName: "ShippingInformations");
+                newName: "ShippingInformation");
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_ShippingInformations",
-                table: "ShippingInformations",
+                table: "ShippingInformation",
                 column: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Orders_ShippingInformations_ShippingInformationId",
                 table: "Orders",
                 column: "ShippingInformationId",
-                principalTable: "ShippingInformations",
+                principalTable: "ShippingInformation",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
