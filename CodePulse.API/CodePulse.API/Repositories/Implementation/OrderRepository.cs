@@ -11,7 +11,7 @@ namespace CodePulse.API.Repositories.Implementation
 
         public OrderRepository(ApplicationDbContext dbContext)
         {
-            this._dbContext = dbContext;
+            _dbContext = dbContext;
         }
         public async Task<List<Order>?> GetAllAsync()
         {

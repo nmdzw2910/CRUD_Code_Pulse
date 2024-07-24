@@ -10,7 +10,7 @@ public class S3Service : IS3Service
 
     public S3Service(IAmazonS3 s3Client)
     {
-        this._s3Client = s3Client;
+        _s3Client = s3Client;
     }
 
     public async Task<string> UploadImageToS3(IFormFile file, string path)

@@ -11,45 +11,50 @@ namespace CodePulse.API.Repositories.Implementation
 
         public CategoryRepository(ApplicationDbContext dbContext)
         {
-            this._dbContext = dbContext;
+            _dbContext = dbContext;
         }
-        public async Task<Category> CreateAsync(Category category)
+
+        public async Task<List<string>> GetAllAsync()
         {
+            return await _dbContext.Categories.Select(c => c.Name).ToListAsync();
+        }
+
+        public async Task<string> GetByNameAsync(string name)
+        {
+            var category = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Name == name);
+            return category?.Name;
+        }
+
+        public async Task<string> CreateAsync(string name)
+        {
+            var category = new Category { Name = name };
             await _dbContext.Categories.AddAsync(category);
             await _dbContext.SaveChangesAsync();
-
-            return category;
+            return category.Name;
         }
 
-        public async Task<List<Category>?> GetAllAsync()
+        public async Task<string> UpdateAsync(string oldName, string newName)
         {
-            var categories = await _dbContext.Categories.ToListAsync();
-
-            return categories;
+            var category = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Name == oldName);
+            if (category != null)
+            {
+                category.Name = newName;
+                await _dbContext.SaveChangesAsync();
+                return category.Name;
+            }
+            return null;
         }
 
-        public async Task<Category?> GetByIdAsync(Guid id)
+        public async Task<string> DeleteAsync(string name)
         {
-            var category = await _dbContext.Categories.FindAsync(id);
-            return category;
-        }
-
-        public async Task<Category> UpdateAsync(Category category)
-        {
-            // Attach the category to the DbContext and mark it as modified
-            _dbContext.Attach(category);
-            _dbContext.Entry(category).State = EntityState.Modified;
-
-            // Save changes to the database
-            await _dbContext.SaveChangesAsync();
-            return category;
-        }
-
-        public async Task<Category> DeleteAsync(Category category)
-        {
-            _dbContext.Categories.Remove(category);
-            await _dbContext.SaveChangesAsync();
-            return category;
+            var category = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Name == name);
+            if (category != null)
+            {
+                _dbContext.Categories.Remove(category);
+                await _dbContext.SaveChangesAsync();
+                return category.Name;
+            }
+            return null;
         }
     }
 }

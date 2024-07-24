@@ -11,14 +11,12 @@ namespace CodePulse.API.Repositories.Implementation
 
         public ProductRepository(ApplicationDbContext dbContext)
         {
-            this._dbContext = dbContext;
+            _dbContext = dbContext;
         }
 
         public async Task<List<Product>> GetAllAsync()
         {
-            var categories = await _dbContext.Products.Include(p => p.ProductImages).ToListAsync();
-
-            return categories;
+            return await _dbContext.Products.Include(p => p.ProductImages).ToListAsync();
         }
 
         public async Task<Product?> GetByIdAsync(Guid id)

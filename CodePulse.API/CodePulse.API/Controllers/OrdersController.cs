@@ -16,9 +16,9 @@ namespace CodePulse.API.Controllers
 
         public OrdersController(IOrderRepository orderRepository, IOrderService orderService, IMapper mapper)
         {
-            this._orderRepository = orderRepository;
-            this._orderService = orderService;
-            this._mapper = mapper;
+            _orderRepository = orderRepository;
+            _orderService = orderService;
+            _mapper = mapper;
         }
 
         /// <summary>

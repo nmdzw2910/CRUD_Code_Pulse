@@ -16,9 +16,9 @@ namespace CodePulse.API.Services
         /// </summary>
         public ProductService(IProductRepository productRepository, IMapper mapper, IS3Service s3Service)
         {
-            this._productRepository = productRepository;
-            this._mapper = mapper;
-            this._s3Service = s3Service;
+            _productRepository = productRepository;
+            _mapper = mapper;
+            _s3Service = s3Service;
         }
 
         public async Task<ProductDto> Create(ProductDto request, IFormFileCollection images)

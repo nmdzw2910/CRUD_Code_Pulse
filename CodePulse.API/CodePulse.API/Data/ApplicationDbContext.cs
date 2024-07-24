@@ -14,5 +14,12 @@ namespace CodePulse.API.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderDetail> OrderDetails { get; set; }
         public DbSet<ShippingInformation> ShippingInformation { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Category>()
+                .HasKey(c => c.Name); // Use Name as the primary key
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

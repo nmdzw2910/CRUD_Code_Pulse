@@ -19,9 +19,9 @@ namespace CodePulse.API.Services
         /// <param name="orderRepository">IOrderRepository.</param>
         public OrderService(IOrderRepository orderRepository, ApplicationDbContext dbContext, IMapper mapper)
         {
-            this._orderRepository = orderRepository;
-            this._dbContext = dbContext;
-            this._mapper = mapper;
+            _orderRepository = orderRepository;
+            _dbContext = dbContext;
+            _mapper = mapper;
         }
 
         public async Task<OrderDto> Upsert(OrderDto orderDto)

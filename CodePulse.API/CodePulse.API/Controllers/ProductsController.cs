@@ -16,9 +16,9 @@ namespace CodePulse.API.Controllers
 
         public ProductsController(IProductRepository productRepository, IProductService productService, IMapper mapper)
         {
-            this._productRepository = productRepository;
-            this._productService = productService;
-            this._mapper = mapper;
+            _productRepository = productRepository;
+            _productService = productService;
+            _mapper = mapper;
         }
 
         /// <summary>
