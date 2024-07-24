@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodePulse.API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240523154524_CleanCodeReSharper")]
-    partial class CleanCodeReSharper
+    [Migration("20240724154847_InitialSolution")]
+    partial class InitialSolution
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
