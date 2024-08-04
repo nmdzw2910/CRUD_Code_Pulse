@@ -1,8 +1,85 @@
 <div class="container">
-  <h1 class="mt-3">Category List</h1>
-  <div class="d-flex justify-content-end mt-3">
-    <a [routerLink]="['/admin/categories/add']" class="btn btn-primary">
-      Add Category
-    </a>
+    <h2>Category List</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Category Name</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let category of categories">
+          <td>
+            <ng-container *ngIf="category !== categoryToEdit">
+              {{ category }}
+            </ng-container>
+            <ng-container *ngIf="category === categoryToEdit">
+              <input
+                type="text"
+                [(ngModel)]="editedCategoryName"
+                class="form-control"
+              />
+            </ng-container>
+          </td>
+          <td>
+            <ng-container *ngIf="category !== categoryToEdit">
+              <button
+                class="btn btn-warning me-3"
+                (click)="editCategory(category)"
+                [disabled]="isEditing"
+              >
+              <i class="fa-solid fa-pencil"></i> Edit
+              </button>
+            </ng-container>
+            <ng-container *ngIf="category !== categoryToEdit">
+              <button
+                class="btn btn-danger"
+                (click)="deleteCategory(category)"
+                [disabled]="isEditing"
+              >
+              <i class="fa-solid fa-close"></i> Delete
+              </button>
+            </ng-container>
+            <ng-container *ngIf="category === categoryToEdit">
+              <button
+                class="btn btn-success me-3"
+                (click)="updateCategory()"
+                [disabled]="isUpdating"
+              >
+              <i class="fa-solid fa-save"></i> Update
+              </button>
+
+              <button
+              class="btn btn-danger"
+              (click)="cancelEdit()"
+              [disabled]="isUpdating"
+            >
+            <i class="fa-solid fa-close"></i> Cancel
+            </button>
+            </ng-container>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <input
+              type="text"
+              [(ngModel)]="newCategory"
+              placeholder="Add new category"
+              class="form-control"
+              [disabled]="isEditing"
+            />
+          </td>
+          <td>
+            <button
+              class="btn btn-primary"
+              (click)="addCategory()"
+              [disabled]="isEditing"
+            >
+            <i class="fa-solid fa-plus"></i> Add
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-</div>
+  

@@ -47,16 +47,15 @@
           inputId="productBrand"
           name="brand"
           [(ngModel)]="product.brand"
-          [type]="'text'"
         ></base-input-field>
-        <base-input-field
-          label="Category"
-          inputId="productCategory"
-          name="category"
-          [(ngModel)]="product.category"
-          [type]="'text'"
-        ></base-input-field>
-        <div class="mb-3">
+        <label class="form-label" for="categorySelect">Category</label>
+        <select class="form-control" id="categorySelect" (change)="onCategoryChange($event)" [value]="selectedCategory">
+          <option value=""></option>
+          <option *ngFor="let category of categories" [value]="category">
+            {{ category }}
+          </option>
+        </select>
+        <div class="mt-3">
           <base-button type="submit" [loading]="isSaving"></base-button>
         </div>
       </form>

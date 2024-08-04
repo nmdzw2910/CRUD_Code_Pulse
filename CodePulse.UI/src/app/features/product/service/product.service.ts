@@ -17,10 +17,10 @@ export class ProductService {
   }
 
   getAllProducts(): Observable<Product[]> {
-    return this.http.get<Product[]>(`${this.baseUrl}`);
+    return this.http.get<Product[]>(this.baseUrl);
   }
 
   upsertProduct(model: FormData): Observable<Product> {
-    return this.http.put<Product>(`${this.baseUrl}`, model);
+    return this.http.put<Product>(this.baseUrl, model);
   }
 }

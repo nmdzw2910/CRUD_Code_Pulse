@@ -4,6 +4,7 @@ import { ProductService } from '../service/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { DomSanitizer } from '@angular/platform-browser';
+import { CategoryService } from '../../category/services/category.service';
 
 @Component({
   selector: 'upsert-product',
@@ -19,9 +20,12 @@ export class UpsertProductComponent implements OnInit {
   imagePreviews: any[] = [];
   isUpdatingPicture: boolean = false;
   isSaving: boolean = false;
+  categories: string[] = [];
+  selectedCategory: string | null = null;
 
   constructor(
     private productService: ProductService,
+    private categoryService: CategoryService,
     private route: ActivatedRoute,
     private router: Router,
     private toastr: ToastrService,
@@ -29,10 +33,13 @@ export class UpsertProductComponent implements OnInit {
   ) {
     this.product = {
       name: '',
+      brand: '',
+      category: ''
     };
   }
 
   ngOnInit(): void {
+    this.loadCategories();
     this.route.params.subscribe((params) => {
       this.isEdit = params['id'] !== undefined;
 
@@ -76,7 +83,7 @@ export class UpsertProductComponent implements OnInit {
     formData.append('price', product.price?.toString() || '');
     formData.append('stock', product.stock?.toString() || '');
     formData.append('brand', product.brand || '');
-    formData.append('category', product.category || '');
+    formData.append('category', this.selectedCategory || '');
 
     Array.from(this.selectedImages).forEach((image) =>
       formData.append('image', image)
@@ -85,14 +92,33 @@ export class UpsertProductComponent implements OnInit {
     return formData;
   }
 
+  onCategoryChange(event: Event): void {
+    const selectElement = event.target as HTMLSelectElement;
+    this.selectedCategory = selectElement.value;
+  }
+
   private loadProduct(productId: string): void {
     this.isLoading = true;
     this.productService.getProductById(productId).subscribe({
       next: (response) => {
         this.product = response;
+        this.selectedCategory = this.product.category || null;
         this.isLoading = false;
         this.isUpdatingPicture = false;
         this.getPreviewPictures(this.selectedImages);
+      },
+      error: (error) => {
+        this.toastr.error(error);
+        this.isLoading = false;
+      },
+    });
+  }
+
+  private loadCategories(): void {
+    this.categoryService.getAllCategories().subscribe({
+      next: (response) => {
+        this.categories = response;
+        this.isLoading = false;
       },
       error: (error) => {
         this.toastr.error(error);

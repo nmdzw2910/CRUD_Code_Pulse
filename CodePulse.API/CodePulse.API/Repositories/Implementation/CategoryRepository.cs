@@ -27,6 +27,14 @@ namespace CodePulse.API.Repositories.Implementation
 
         public async Task<string> CreateAsync(string name)
         {
+            var existingCategory = await _dbContext.Categories
+                .FirstOrDefaultAsync(c => c.Name == name);
+
+            if (existingCategory != null)
+            {
+                return existingCategory.Name;
+            }
+
             var category = new Category { Name = name };
             await _dbContext.Categories.AddAsync(category);
             await _dbContext.SaveChangesAsync();
@@ -35,15 +43,31 @@ namespace CodePulse.API.Repositories.Implementation
 
         public async Task<string> UpdateAsync(string oldName, string newName)
         {
-            var category = await _dbContext.Categories.FirstOrDefaultAsync(c => c.Name == oldName);
+            var existingCategory = await _dbContext.Categories
+                .FirstOrDefaultAsync(c => c.Name == newName);
+
+            if (existingCategory != null)
+            {
+                return existingCategory.Name;
+            }
+
+            var category = await _dbContext.Categories
+                .FirstOrDefaultAsync(c => c.Name == oldName);
+
             if (category != null)
             {
-                category.Name = newName;
+                var newCategory = new Category { Name = newName };
+                _dbContext.Categories.Add(newCategory);
+
+                _dbContext.Categories.Remove(category);
+
                 await _dbContext.SaveChangesAsync();
-                return category.Name;
+                return newCategory.Name;
             }
+
             return null;
         }
+
 
         public async Task<string> DeleteAsync(string name)
         {

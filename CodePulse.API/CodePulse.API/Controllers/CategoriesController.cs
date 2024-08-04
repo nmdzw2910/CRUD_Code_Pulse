@@ -1,5 +1,6 @@
 ﻿using CodePulse.API.Repositories.Interface;
 using Microsoft.AspNetCore.Mvc;
+using CodePulse.API.Models.Domain;
 
 namespace CodePulse.API.Controllers
 {
@@ -42,19 +43,30 @@ namespace CodePulse.API.Controllers
         /// Add a new category.
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> AddCategory([FromBody] string name)
+        public async Task<IActionResult> AddCategory([FromBody] Category category)
         {
-            var createdCategory = await _categoryRepository.CreateAsync(name);
-            return CreatedAtAction(nameof(GetCategory), new { name = createdCategory }, createdCategory);
+            if (string.IsNullOrWhiteSpace(category.Name))
+            {
+                return BadRequest("Category name cannot be empty.");
+            }
+
+            var createdCategory = await _categoryRepository.CreateAsync(category.Name);
+            return Ok(createdCategory);
         }
+
 
         /// <summary>
         /// Update a category to new name by its old name.
         /// </summary>
         [HttpPut("{oldName}")]
-        public async Task<IActionResult> UpdateCategory(string oldName, [FromBody] string newName)
+        public async Task<IActionResult> UpdateCategory(string oldName, [FromBody] Category category)
         {
-            var updatedCategory = await _categoryRepository.UpdateAsync(oldName, newName);
+            if (string.IsNullOrWhiteSpace(category.Name))
+            {
+                return BadRequest("Category name cannot be empty.");
+            }
+
+            var updatedCategory = await _categoryRepository.UpdateAsync(oldName, category.Name);
             if (updatedCategory == null)
             {
                 return NotFound();
@@ -73,7 +85,7 @@ namespace CodePulse.API.Controllers
             {
                 return NotFound();
             }
-            return NoContent();
+            return Ok($"Category {deletedCategory} is deleted");
         }
     }
 }
