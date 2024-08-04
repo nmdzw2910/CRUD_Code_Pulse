@@ -14,6 +14,7 @@ export class CategoryListComponent implements OnInit {
   editedCategoryName: string = '';
   isEditing: boolean = false;
   isUpdating: boolean = false;
+  isLoading: boolean = false;
 
   constructor(private categoryService: CategoryService, private toastr: ToastrService) { }
 
@@ -22,6 +23,7 @@ export class CategoryListComponent implements OnInit {
   }
 
   loadCategories(): void {
+    this.isLoading = true;
     this.categoryService.getAllCategories().subscribe({
       next: (data) => {
         this.categories = data;
@@ -30,6 +32,7 @@ export class CategoryListComponent implements OnInit {
         this.toastr.error(err.message);
       }
     })
+    this.isLoading = false;
   }
 
   addCategory(): void {
@@ -38,6 +41,7 @@ export class CategoryListComponent implements OnInit {
       return;
     }
 
+    this.isLoading = true;
     this.categoryService.createCategory(this.newCategory).subscribe({
       next: (category) => {
         this.categories.push(category);
@@ -48,6 +52,7 @@ export class CategoryListComponent implements OnInit {
         this.toastr.error(err.message);
       }
     });
+    this.isLoading = false;
   }
 
   editCategory(category: string): void {
@@ -57,6 +62,7 @@ export class CategoryListComponent implements OnInit {
   }
 
   deleteCategory(category: string): void {
+    this.isLoading = true;
     this.categoryService.deleteCategory(category).subscribe({
       next: (category) => {
         this.toastr.success(category);
@@ -66,6 +72,7 @@ export class CategoryListComponent implements OnInit {
         this.toastr.error(err.message);
       }
     });
+    this.isLoading = false;
   }
 
   updateCategory(): void {
@@ -75,7 +82,7 @@ export class CategoryListComponent implements OnInit {
     }
 
     this.isUpdating = true;
-
+    this.isLoading = true;
     this.categoryService.updateCategory(this.categoryToEdit!, this.editedCategoryName).subscribe({
       next: () => {
         const index = this.categories.indexOf(this.categoryToEdit!);
@@ -93,6 +100,7 @@ export class CategoryListComponent implements OnInit {
         this.isUpdating = false;
       }
     });
+    this.isLoading = false;
   }
 
   cancelEdit(): void {
