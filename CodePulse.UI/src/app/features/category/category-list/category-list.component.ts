@@ -15,6 +15,7 @@ export class CategoryListComponent implements OnInit {
   isEditing: boolean = false;
   isUpdating: boolean = false;
   isLoading: boolean = false;
+  sortAsc: boolean = true;
 
   constructor(private categoryService: CategoryService, private toastr: ToastrService) { }
 
@@ -26,7 +27,12 @@ export class CategoryListComponent implements OnInit {
     this.isLoading = true;
     this.categoryService.getAllCategories().subscribe({
       next: (data) => {
-        this.categories = data;
+        if (this.sortAsc) {
+          this.categories = data.sort();
+        }
+        else {
+          this.categories = data.sort().reverse();
+        }
       },
       error: (err) => {
         this.toastr.error(err.message);
@@ -38,6 +44,11 @@ export class CategoryListComponent implements OnInit {
   addCategory(): void {
     if (this.newCategory.trim() === '') {
       this.toastr.error('Category name cannot be empty.');
+      return;
+    }
+
+    if (this.categories.includes(this.newCategory)) {
+      this.toastr.error('Category already exists.');
       return;
     }
 
@@ -107,5 +118,10 @@ export class CategoryListComponent implements OnInit {
     this.categoryToEdit = null;
     this.editedCategoryName = '';
     this.isEditing = false;
+  }
+
+  toggleSort(): void {
+    this.sortAsc = !this.sortAsc;
+    this.loadCategories();
   }
 }
